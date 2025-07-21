@@ -1,0 +1,50 @@
+
+body {
+    font-family: 'Noto Sans JP', 'Inter', sans-serif;
+    background-color: #f8f9fa; 
+    color: #343a40; 
+}
+.main-container {
+    display: flex;
+    flex-direction: column; /* Changed to column as sidebar is removed */
+    min-height: 100vh;
+}
+#content-area {
+    flex-grow: 1;
+    padding: 1rem; /* Adjusted padding */
+    width: 100%; /* Full width */
+    max-width: 900px; /* Max width for content readability */
+    margin: 0 auto; /* Center content area */
+}
+.policy-article-title {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    padding: 1rem 1.5rem; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.375rem 0.375rem 0 0; 
+    margin-bottom: 0; 
+}
+.policy-article-content {
+    padding: 1.5rem; 
+    border: 1px solid #dee2e6;
+    border-top: none;
+    background-color: #ffffff;
+    border-radius: 0 0 0.375rem 0.375rem; 
+}
+.policy-article-content p, .policy-article-content ul, .policy-article-content ol {
+    margin-bottom: 1em;
+    line-height: 1.8;
+}
+.policy-article-content ul { list-style-type: disc; margin-left: 20px; }
+.policy-article-content ol { list-style-type: decimal; margin-left: 20px; }
+
+.sticky-header {
+    position: static;
+    top: 0;
+    z-index: 30; 
+    background-color: #f8f9fa; 
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}

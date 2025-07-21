@@ -1,0 +1,45 @@
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+.table-cell-strong {
+    font-weight: 600;
+}
+.highlight-red {
+    color: #e53e3e; /* Tailwind red-600 */
+    font-weight: bold;
+}
+/* Responsive table handling: On small screens, display as blocks */
+@media (max-width: 768px) {
+    .responsive-table th, .responsive-table td {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .responsive-table th {
+        background-color: transparent;
+        font-weight: bold;
+        padding-top: 0.75rem;
+        padding-bottom: 0.25rem;
+        border-bottom: none;
+    }
+    .responsive-table td {
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #e2e8f0; /* Tailwind gray-200 */
+    }
+    .responsive-table tr:last-child td {
+        border-bottom: none;
+    }
+    .responsive-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.25rem;
+        color: #4a5568; /* Tailwind gray-700 */
+    }
+     .responsive-table th {
+        display: none; /* Hide table headers in block display as labels are in td */
+    }
+}

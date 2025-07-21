@@ -1,0 +1,11 @@
+.kcontainer { max-width: 800px; margin: 0 auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; }
+h1 { text-align: center; color: #4a7d1d; margin-bottom: 30px; font-size: 28px; }
+h2 { border-bottom: 2px solid #4a7d1d; padding-bottom: 8px; margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #4a7d1d; }
+h3 { margin-top: 30px; margin-bottom: 15px; font-size: 18px; color: #333; border-left: 4px solid #1a73e8; padding-left: 10px;}
+p { margin-bottom: 15px; font-size: 15px; }
+ul { padding-left: 30px; margin-bottom: 15px; }
+li { margin-bottom: 8px; font-size: 15px; }
+.alert { color: #d93025; font-weight: bold; }
+.indent { margin-left: 20px; }
+.important { font-weight: bold; color: #c00; }
+.footer-date { text-align: right; margin-top: 50px; font-size: 14px; }

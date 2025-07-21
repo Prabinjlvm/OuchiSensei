@@ -1,0 +1,197 @@
+/* Custom Styles for FAQ Page */
+
+.st-faq-header {
+    background-color: #6fba2c; /* Main brand color */
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+}
+.st-faq-header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.st-faq-header p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.st-faq-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.st-faq-category h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #6fba2c;
+}
+
+.st-faq-item {
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden; /* Important for rounded corners with details/summary */
+}
+
+.st-faq-question {
+    padding: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    background-color: #fff; /* Default background for question */
+    transition: background-color 0.3s ease;
+}
+.st-faq-question:hover {
+    background-color: #f0f0f0;
+}
+
+.st-faq-question .icon {
+    transition: transform 0.3s ease; /* Combined transition for icon */
+    font-size: 1.2rem;
+    color: #6fba2c;
+}
+
+details .st-faq-question .icon i.fa-plus {
+    display: inline-block;
+}
+details .st-faq-question .icon i.fa-times {
+    display: none;
+}
+
+details[open] .st-faq-question .icon i.fa-plus {
+    display: none;
+}
+details[open] .st-faq-question .icon i.fa-times {
+    display: inline-block;
+}
+/* If you prefer rotation for a single icon:
+details[open] .st-faq-question .icon {
+    transform: rotate(45deg);
+}
+*/
+
+.st-faq-answer {
+    padding: 0 20px 20px 20px; /* Top padding removed as it's part of the question */
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    background-color: #fdfdfd; /* Slightly different background for answer */
+    border-top: 1px solid #eee;
+}
+.st-faq-answer p {
+    margin-bottom: 10px;
+}
+.st-faq-answer a {
+    color: #6fba2c;
+    text-decoration: underline;
+}
+.st-faq-answer a:hover {
+    color: #5a9a20;
+}
+.st-faq-answer-label { /* For the "A:" prefix */
+    font-weight: bold;
+    color: #6fba2c;
+    margin-right: 5px;
+}
+.st-faq-important-note {
+    color: #df0000;
+    font-weight: bold;
+}
+
+.st-faq-cta-section {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #e9f5e3; /* Light green background */
+    border-radius: 8px;
+    margin-top: 40px;
+}
+.st-faq-cta-section h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+.st-faq-cta-button {
+    background-color: #6fba2c;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin: 5px;
+}
+.st-faq-cta-button:hover {
+    background-color: #5a9a20;
+}
+.st-faq-cta-button.secondary {
+    background-color: #fff;
+    color: #6fba2c;
+    border: 2px solid #6fba2c;
+}
+.st-faq-cta-button.secondary:hover {
+    background-color: #f0f0f0;
+}
+
+/* Image placeholder styles */
+.st-faq-img-placeholder {
+/*             background-color: #e0e0e0;*/
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+/*            color: #777;*/
+    font-style: italic;
+    margin: 20px auto; /* Centered, with margin */
+}
+.st-faq-hero-image-placeholder {
+    width: 100%;
+    max-width: 600px; /* Limit width for hero image */
+    height: 190px; /* Adjust as needed */
+}
+.st-faq-category-image-placeholder {
+    width: 100%;
+    max-width: 400px; /* Limit width for category images */
+    height: 150px; /* Adjust as needed */
+}
+
+/* Fallback for details/summary if JS is not available or for older browsers (basic visibility) */
+details summary::-webkit-details-marker {
+    display: none; /* Hide default marker in Chrome/Safari */
+}
+details summary::marker {
+     display: none; /* Hide default marker in Firefox */
+}
+
+@media (max-width: 768px) {
+    .st-faq-header h1 {
+        font-size: 2rem;
+    }
+    .st-faq-header p {
+        font-size: 1rem;
+    }
+    .st-faq-category h2 {
+        font-size: 1.5rem;
+    }
+    .st-faq-question {
+        font-size: 1rem;
+        padding: 15px;
+    }
+    .st-faq-answer {
+        padding: 0 15px 15px 15px;
+        font-size: 0.95rem;
+    }
+} 

@@ -1,0 +1,180 @@
+/* Contact Form Section */
+.stc-contact-bg {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 10px;
+  }
+  
+  .stc-contact-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(60, 72, 88, 0.12);
+    padding: 48px 48px 40px 48px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: stc-fade-in-up 1s cubic-bezier(0.4,0,0.2,1) 0.1s forwards;
+  }
+  
+  @keyframes stc-fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .stc-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #2d3748;
+    text-align: center;
+    letter-spacing: -1px;
+    animation: stc-fade-in 1.2s 0.2s both;
+  }
+  
+  .stc-desc {
+    color: #6b7280;
+    font-size: 1.08rem;
+    margin-bottom: 28px;
+    text-align: center;
+    animation: stc-fade-in 1.2s 0.3s both;
+  }
+  
+  @keyframes stc-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .stc-success {
+    background: #e6fffa;
+    color: #2c7a7b;
+    border-radius: 8px;
+    padding: 18px 12px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.1rem;
+    animation: stc-fade-in-up 0.7s 0.1s both;
+  }
+  
+  .stc-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  
+  .stc-form-group {
+    position: relative;
+    margin-bottom: 0;
+  }
+  
+  .stc-input {
+    width: 100%;
+    padding: 18px 16px 18px 16px;
+    font-size: 1.08rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f9fafb;
+    outline: none;
+    transition: border 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1), background 0.25s;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(49, 130, 206, 0.03);
+  }
+  
+  .stc-input:focus {
+    border-color: #4a7d1d;
+    background: #fff;
+    box-shadow: 0 0 0 4px #bee3f8, 0 2px 8px rgba(49, 130, 206, 0.08);
+    animation: stc-input-focus 0.3s;
+  }
+  
+  @keyframes stc-input-focus {
+    from {
+      box-shadow: 0 0 0 0 #bee3f8, 0 1px 2px rgba(49, 130, 206, 0.03);
+    }
+    to {
+      box-shadow: 0 0 0 4px #bee3f8, 0 2px 8px rgba(49, 130, 206, 0.08);
+    }
+  }
+  
+  .stc-label {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    color: #a0aec0;
+    font-size: 1.08rem;
+    pointer-events: none;
+    background: transparent;
+    transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+    padding: 0 4px;
+    z-index: 2;
+  }
+  
+  .stc-input:focus + .stc-label,
+  .stc-input:not(:placeholder-shown) + .stc-label {
+    top: -12px;
+    left: 12px;
+    font-size: 0.92rem;
+    color: #4a7d1d;
+    background: #fff;
+    padding: 0 8px;
+    box-shadow: 0 2px 8px rgba(49, 130, 206, 0.04);
+    border-radius: 6px;
+  }
+  
+  .stc-textarea {
+    min-height: 100px;
+    resize: vertical;
+    transition: min-height 0.2s;
+  }
+  
+  .stc-btn {
+    background: linear-gradient(90deg, #4a7d1d 0%, #4a7d1d 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.22s, box-shadow 0.22s, transform 0.1s;
+    box-shadow: 0 2px 8px rgba(49, 130, 206, 0.08);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    will-change: transform;
+  }
+  
+  .stc-btn:hover, .stc-btn:focus {
+    background: linear-gradient(90deg, #4a7d1d 0%, #4a7d1d 100%);
+    box-shadow: 0 6px 24px rgba(49, 130, 206, 0.16);
+    transform: translateY(-2px) scale(1.03);
+  }
+  
+  .stc-btn:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(49, 130, 206, 0.10);
+  }
+  
+  @media (max-width: 800px) {
+    .stc-contact-card {
+      max-width: 98vw;
+      padding: 32px 8px 24px 8px;
+    }
+    .stc-title {
+      font-size: 1.5rem;
+    }
+    .stc-desc {
+      font-size: 1rem;
+    }
+  }
+  

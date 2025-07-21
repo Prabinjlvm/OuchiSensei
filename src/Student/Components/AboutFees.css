@@ -1,0 +1,517 @@
+/* price.html */
+/* 既存CSSを変更しないため、詳細度を高めるか、ユニークなクラス名を使用 */
+
+/* 基本設定 */
+body.aboutfess-pricing-body { /* 既存スタイルと競合を避けるため、より具体的なセレクタやクラスを検討 */
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    line-height: 1.8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+.aboutfess-main a {
+    color: #007bff; /* 基本的なリンク色 */
+    text-decoration: none;
+}
+
+.aboutfess-main a:hover {
+    text-decoration: underline;
+}
+
+.aboutfess-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.aboutfess-text-center {
+    text-align: center;
+}
+
+.aboutfess-section-padding {
+    padding: 30px 0;
+}
+
+.aboutfess-bg-light {
+    background-color: #f8f9fa;
+}
+
+.aboutfess-section-title {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    color: #2c3e50; /* やや濃いめの信頼感のある色 */
+    font-weight: 600;
+}
+
+.aboutfess-section-title i { /* アイコン用 */
+    margin-right: 10px;
+    color: #6fba2c; /* ブランドのアクセントカラー */
+}
+
+
+/* ヘッダー・フッター（プレースホルダー） */
+.aboutfess-header, .aboutfess-footer {
+    /* 既存サイトのスタイルに合わせるか、シンプルに */
+    padding: 5px 0;
+    background-color: #fff; /* 仮 */
+    border-bottom: 1px solid #eee; /* 仮 */
+}
+.aboutfess-header h1 {
+    font-size: 2.3rem;
+    color: #333;
+    text-align: center;
+    margin: 5px 0;
+}
+.aboutfess-footer .aboutfess-copyright {
+    font-size: 0.9em;
+    color: #777;
+    padding: 20px 0;
+}
+
+
+/* ヒーローセクション */
+.aboutfess-hero-section {
+    background: linear-gradient(to right, #6fba2c, #5cb85c); /* ブランドカラーを意識したグラデーション */
+    color: #fff;
+    padding: 25px 0;
+    border-bottom: 5px solid #5aae26;
+}
+
+.aboutfess-hero-section h2 {
+    font-size: 2.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.3;
+    color: #fff;
+}
+
+.aboutfess-hero-section .aboutfess-sub-copy {
+    font-size: 1.2rem;
+/*    margin-bottom: 30px;*/
+    opacity: 0.9;
+}
+
+/* CTAボタン */
+.aboutfess-cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff8c00; /* 目立つオレンジ系のCTAカラー */
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.aboutfess-cta-button:hover {
+    background-color: #e67e00;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+.aboutfess-cta-button.aboutfess-primary-cta { /* 主要なCTAのスタイル */
+    background-color: #007bff; /* 参考サイトのブルー系 */
+    color: #ffff;
+}
+.aboutfess-cta-button.aboutfess-primary-cta:hover {
+    background-color: #0056b3;
+}
+
+.aboutfess-cta-button.aboutfess-large-cta {
+    padding: 15px 40px;
+    font-size: 1.3rem;
+}
+.aboutfess-micro-copy {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+
+/* 選ばれる理由セクション */
+.aboutfess-reason-section .aboutfess-reason-content {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.aboutfess-reason-section .aboutfess-reason-point {
+    flex-basis: calc(50% - 30px); /* 2カラム */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    text-align: center;
+}
+.aboutfess-reason-section .aboutfess-reason-point h3 {
+    font-size: 1.5rem;
+    color: #3498db; /* アクセントカラー */
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.aboutfess-reason-section .aboutfess-reason-point h3 .aboutfess-highlight {
+    color: #e74c3c; /* 強調したい部分のカラー */
+    font-weight: bold;
+}
+.aboutfess-reason-section .aboutfess-reason-point p {
+    font-size: 1rem;
+    color: #555;
+}
+.aboutfess-icon-large {
+    font-size: 3rem;
+    color: #6fba2c; /* ブランドアクセントカラー */
+    margin-bottom: 15px;
+}
+
+
+/* 料金プランセクション */
+.aboutfess-plan-section .aboutfess-plan-card-wrapper {
+    display: flex;
+    justify-content: center; /* カードを中央に配置 */
+    align-items: stretch; /* カードの高さを揃える */
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.aboutfess-plan-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* モバイルでは全幅 */
+    max-width: 450px; /* PCでは最大幅を設定 */
+    overflow: hidden; /* 角丸のため */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.aboutfess-plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.aboutfess-plan-card-header {
+    background-color: #6fba2c; /* ブランドアクセントカラー */
+    color: #fff;
+    padding: 25px 20px;
+    text-align: center;
+}
+.aboutfess-plan-card-header h3 {
+    font-size: 1.8rem;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    color: #555;
+}
+.aboutfess-plan-card-header .aboutfess-plan-description {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.aboutfess-plan-card-body {
+    padding: 30px 25px;
+    text-align: center;
+    flex-grow: 1; /* 内容が少なくてもフッターが下に来るように */
+}
+.aboutfess-plan-card-body .aboutfess-price-main {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+.aboutfess-plan-card-body .aboutfess-price-unit {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-left: 5px;
+}
+.aboutfess-plan-card-body .aboutfess-price-tax {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #555;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+.aboutfess-plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    text-align: left;
+}
+.aboutfess-plan-features li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+.aboutfess-plan-features li i {
+    color: #27ae60; /* 成功・チェックマークの色 */
+    margin-right: 10px;
+}
+.aboutfess-plan-card-footer {
+    background-color: #f9f9f9;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #555;
+    border-top: 1px solid #eee;
+}
+.aboutfess-plan-card-footer p {
+    margin: 0;
+}
+
+/* お支払い方法セクション */
+.aboutfess-payment-section .aboutfess-payment-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+.aboutfess-payment-section .aboutfess-payment-method {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    text-align: center;
+}
+.aboutfess-payment-section .aboutfess-payment-method h4 {
+    font-size: 1.3rem;
+    color: #3498db;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.aboutfess-payment-section .aboutfess-payment-method .aboutfess-note {
+    font-size: 0.9rem;
+    color: #e74c3c; /* 注意喚起の色 */
+}
+.aboutfess-payment-section .aboutfess-payment-method .aboutfess-benefit i {
+    color: #f1c40f; /* メリットを強調する色 */
+}
+.aboutfess-payment-section .aboutfess-payment-logo {
+    max-height: 40px;
+    margin-bottom: 15px;
+	display: block; /* または 이미 ブロックレベル要素の場合 */
+	margin-left: auto;
+	margin-right: auto;
+}
+.aboutfess-icon-medium {
+    font-size: 2.5rem;
+    color: #6fba2c;
+    margin-bottom: 10px;
+}
+.aboutfess-external-link i {
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+/* 領収書セクション */
+.aboutfess-receipt-section .aboutfess-receipt-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.aboutfess-receipt-section .aboutfess-receipt-detail {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    border-left: 5px solid #6fba2c;
+}
+.aboutfess-receipt-section .aboutfess-receipt-detail h5 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+.aboutfess-receipt-section .aboutfess-receipt-detail h5 i {
+    margin-right: 8px;
+    color: #6fba2c;
+}
+
+
+/* 安心サポートセクション */
+.aboutfess-support-section {
+    background-color: #e9f7ef; /* 安心感のある淡いグリーン系 */
+    border-top: 1px solid #d1e7dd;
+    border-bottom: 1px solid #d1e7dd;
+}
+.aboutfess-support-section .aboutfess-support-content h3 {
+    font-size: 1.8rem;
+    color: #198754; /* 濃いめのグリーン */
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.aboutfess-support-section .aboutfess-support-content p {
+    font-size: 1.1rem;
+    color: #333;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.aboutfess-icon-xlarge {
+    font-size: 4rem;
+    color: #198754;
+    margin-bottom: 20px;
+}
+.aboutfess-internal-link {
+    color: #0d6efd;
+    font-weight: 500;
+}
+.aboutfess-internal-link:hover {
+    color: #0a58ca;
+}
+
+/* 重要事項セクション */
+.aboutfess-important-notes-section .aboutfess-notes-accordion {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.aboutfess-important-notes-section .aboutfess-accordion-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+.aboutfess-important-notes-section .aboutfess-accordion-title {
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: block; /* detailsのデフォルトマーカーを消すため */
+    position: relative;
+    color: #2c3e50;
+}
+.aboutfess-important-notes-section .aboutfess-accordion-title::after { /* カスタム開閉アイコン */
+    content: '+';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+.aboutfess-important-notes-section .aboutfess-accordion-item[open] .aboutfess-accordion-title::after {
+    content: '−';
+}
+.aboutfess-important-notes-section .aboutfess-accordion-content {
+    padding: 0px 20px 20px 20px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    border-top: 1px solid #eee;
+}
+.aboutfess-important-notes-section .aboutfess-accordion-content ul {
+    padding-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.aboutfess-important-notes-section .aboutfess-accordion-content li {
+    margin-bottom: 8px;
+}
+
+
+/* 最終CTAセクション */
+.aboutfess-final-cta-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.aboutfess-final-cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+.aboutfess-final-cta-section .aboutfess-secondary-links {
+    margin-top: 25px;
+}
+.aboutfess-final-cta-section .aboutfess-secondary-links a {
+    font-size: 1rem;
+    margin: 0 10px;
+}
+.aboutfess-final-cta-section .aboutfess-secondary-links .aboutfess-separator {
+    color: #ccc;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 992px) {
+    .aboutfess-section-title {
+        font-size: 2rem;
+    }
+    .aboutfess-hero-section h2 {
+        font-size: 2.4rem;
+    }
+    .aboutfess-hero-section .aboutfess-sub-copy {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .aboutfess-section-padding {
+        padding: 40px 0;
+    }
+    .aboutfess-section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    .aboutfess-header h1 {
+        font-size: 2rem;
+    }
+    .aboutfess-hero-section {
+        padding: 30px 0;
+    }
+    .aboutfess-hero-section h2 {
+        font-size: 2rem;
+    }
+    .aboutfess-hero-section .aboutfess-sub-copy {
+        font-size: 1rem;
+    }
+    .aboutfess-cta-button {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+    .aboutfess-cta-button.aboutfess-large-cta {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+
+    .aboutfess-reason-section .aboutfess-reason-content {
+        flex-direction: column;
+    }
+    .aboutfess-reason-section .aboutfess-reason-point {
+        flex-basis: 100%; /* 1カラム */
+    }
+
+    .aboutfess-payment-section .aboutfess-payment-methods-grid,
+    .aboutfess-receipt-section .aboutfess-receipt-details-grid {
+        grid-template-columns: 1fr; /* 1カラム */
+    }
+    .aboutfess-final-cta-section h2 {
+        font-size: 1.8rem;
+    }
+    .aboutfess-important-notes-section .aboutfess-accordion-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .aboutfess-container {
+        width: 95%;
+    }
+    .aboutfess-section-title {
+        font-size: 1.6rem;
+    }
+    .aboutfess-hero-section h2 {
+        font-size: 1.7rem;
+    }
+    .aboutfess-plan-card-body .aboutfess-price-main {
+        font-size: 2.8rem;
+    }
+    .aboutfess-plan-card-body .aboutfess-price-tax {
+        font-size: 0.9rem;
+    }
+    .aboutfess-final-cta-section .aboutfess-secondary-links a {
+        display: block;
+        margin: 10px 0;
+    }
+    .aboutfess-final-cta-section .aboutfess-secondary-links .aboutfess-separator {
+        display: none;
+    }
+}

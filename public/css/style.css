@@ -1,0 +1,1051 @@
+@charset "utf-8";
+/* Font Awesome を使うための読み込み (CDNの例) */
+/* <head>内に記述。すでに読み込んでいる場合は不要 */
+@import url(../../../cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css);
+@import "base.css";
+@import "style_map.css";
+
+
+/* ここから下へいれる */
+
+
+/** common **/
+/* class */
+.clear { clear:both; }
+.clearfix:after { content:""; display:block; clear:both; height:0; }
+.clearfix  { *zoom: 1; }
+
+.fl_left { float:left;}
+.fl_right { float:right;}
+.al_center { text-align:center; }
+.al_right { text-align:right; }
+.al_left { text-align:left; }
+
+.bold { font-weight:600; }
+.error { color:#ee0000; }
+.noborder { border:none !important; }
+
+.mtop0 { margin-top:0px !important; }
+.mtop5 { margin-top:5px !important; }
+.mtop10 { margin-top:10px !important; }
+.mtop15 { margin-top:15px !important; }
+.mtop20 { margin-top:20px !important; }
+.mtop30 { margin-top:30px !important; }
+.mtop40 { margin-top:40px !important; }
+.mtop50 { margin-top:50px !important; }
+.mbottom0 { margin-bottom:0px !important; }
+.mbottom5 { margin-bottom:5px !important; }
+.mbottom10 { margin-bottom:10px !important; }
+.mbottom15 { margin-bottom:15px !important; }
+.mbottom20 { margin-bottom:20px !important; }
+.mbottom30 { margin-bottom:30px !important; }
+.mbottom40 { margin-bottom:40px !important; }
+.mbottom50 { margin-bottom:50px !important; }
+
+.mleft0 { margin-left:0px !important; }
+.mleft5 { margin-left:5px !important; }
+.mleft10 { margin-left:10px !important; }
+.mleft15 { margin-left:15px !important; }
+.mleft20 { margin-left:20px !important; }
+.mright0 { margin-right:0px !important; }
+.mright5 { margin-right:5px !important; }
+.mright10 { margin-right:10px !important; }
+.mright15 { margin-right:15px !important; }
+.mright20 { margin-right:20px !important; }
+
+.ptop0 { padding-top:0px !important; }
+.ptop5 { padding-top:5px !important; }
+.ptop10 { padding-top:10px !important; }
+.ptop15 { padding-top:15px !important; }
+.ptop20 { padding-top:20px !important; }
+.ptop30 { padding-top:30px !important; }
+
+.pbottom0 { padding-bottom:0px !important; }
+.pbottom5 { padding-bottom:5px !important; }
+.pbottom10 { padding-bottom:10px !important; }
+.pbottom15 { padding-bottom:15px !important; }
+.pbottom20 { padding-bottom:20px !important; }
+
+.pleft0{ padding-left:0px !important; }
+.pleft5{ padding-left:5px !important; }
+.pleft10{ padding-left:10px !important; }
+.pleft15{ padding-left:15px !important; }
+.pleft20{ padding-left:20px !important; }
+.pright0{ padding-right:0px !important; }
+.pright5{ padding-right:5px !important; }
+.pright10{ padding-right:10px !important; }
+.pright15{ padding-right:15px !important; }
+.pright20{ padding-right:20px !important; }
+
+.f10 { font-size:10px !important; }
+.f11 { font-size:11px !important; }
+.f12 { font-size:12px !important; }
+.f13 { font-size:13px !important; }
+.f14 { font-size:14px !important; }
+.f16 { font-size:16px !important; }
+.f18 { font-size:18px !important; }
+.f20 { font-size:20px !important; }
+.f22 { font-size:22px !important; }
+.f24 { font-size:24px !important; }
+.f26 { font-size:26px !important; }
+.f10b { font-size:10px !important; font-weight:bold !important; }
+.f11b { font-size:11px !important; font-weight:bold !important; }
+.f12b { font-size:12px !important; font-weight:bold !important; }
+.f13b { font-size:13px !important; font-weight:bold !important; }
+.f14b { font-size:14px !important; font-weight:bold !important; }
+.f15b { font-size:15px !important; font-weight:bold !important; }
+.f16b { font-size:16px !important; font-weight:bold !important; }
+.f18b { font-size:18px !important; font-weight:bold !important; }
+.f20b { font-size:20px !important; font-weight:bold !important; }
+.f22b { font-size:22px !important; font-weight:bold !important; }
+.f24b { font-size:24px !important; font-weight:bold !important; }
+
+.red { color: #CC0000 !important; }
+.org { color: #CC6600 !important; }
+.gre { color: #006600 !important; }
+.blue { color: #003366 !important; }
+.line-height1 { line-height:1.8 !important; }
+
+
+
+/* ここから下へいれる */
+
+/* Reset and Base Styles */
+:root {
+    --primary-color: #6fba2c; /* おうち先生グリーン */
+    --secondary-color: #4a7d1d; /*濃いグリーン*/
+    --accent-color: #f39c12; /* アクセントオレンジ */
+    --text-color: #333333;
+    --light-text-color: #ffffff;
+    --background-color: #ffffff;
+    --light-gray-bg: #f8f9fa; /* 淡いグレー背景 */
+    --border-color: #dddddd;
+    --font-primary: 'Noto Sans JP', sans-serif;
+    --font-secondary: 'Roboto', sans-serif; /* For English text or numbers */
+    --container-width: 1140px;
+    --header-height: 80px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px; /* Base font size */
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    width: 50%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.75em;
+    color: var(--secondary-color); /* 見出しは濃いグリーン */
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 0.5em; } /* 40px */
+h2 { font-size: 2rem; } /* 32px */
+h3 { font-size: 1.5rem; } /* 24px */
+h4 { font-size: 1.25rem; } /* 20px */
+
+p {
+/*    margin-bottom: 1em; */
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a:hover, a:focus {
+    color: var(--secondary-color);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+/* Utility Classes */
+.sr-only { /* Screen reader only */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+.skip-link {
+    position: absolute;
+    top: -100px; /* Initially hidden */
+    left: 0;
+    background: var(--primary-color);
+    color: var(--light-text-color);
+    padding: 10px 15px;
+    z-index: 9999;
+    transition: top 0.3s ease;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+.text-center { text-align: center; }
+.section-padding { padding: 30px 0; }
+.bg-light { background-color: var(--light-gray-bg); }
+.text-white { color: var(--light-text-color); }
+.text-white h1, .text-white h2, .text-white h3, .text-white h4 { color: var(--light-text-color); }
+.bg-primary-gradient {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 2px solid transparent;
+    padding: 0.75em 1.5em;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.3rem; /* Rounded corners */
+    transition: all 0.3s ease;
+    text-decoration: none !important; /* Ensure no underline */
+}
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    border-color: var(--primary-color);
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--light-text-color);
+}
+.btn-secondary {
+    background-color: var(--accent-color);
+    color: var(--light-text-color);
+    border-color: var(--accent-color);
+}
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: #d68910; /* Darker accent */
+    border-color: #d68910;
+    color: var(--light-text-color);
+}
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-outline:hover, .btn-outline:focus {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+}
+.btn-light {
+    background-color: var(--light-text-color);
+    color: var(--primary-color);
+    border-color: var(--light-text-color);
+}
+.btn-light:hover, .btn-light:focus {
+    background-color: #f1f1f1;
+    border-color: #f1f1f1;
+    color: var(--secondary-color);
+}
+.btn-sm { padding: 0.5em 1em; font-size: 0.875rem; }
+.btn-lg { padding: 1em 2em; font-size: 1.125rem; }
+
+.text-link {
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 0.5em;
+}
+.text-link-light {
+    color: var(--light-text-color);
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 0.5em;
+}
+.text-link-light:hover, .text-link-light:focus {
+    color: #e0e0e0;
+}
+
+
+/* Header */
+
+/* Hero Section */
+.hero {
+    background-color: var(--light-gray-bg); /* Fallback or if no image */
+    padding: 20px 0; /* Adjust padding */
+    position: relative;
+    /* Optional: if using a background image directly on hero */
+    /* background-image: url('images/hero-background.jpg'); */
+    /* background-size: cover; */
+    /* background-position: center; */
+    text-align: center;
+}
+.hero-image-placeholder {
+    /* This is a placeholder for where the HTML will insert the image */
+    /* For testing, you can give it a min-height and background */
+    min-height: 10px; /* Example height */
+    /*background-color: #e0e0e0; /* Placeholder color */
+    background-image: url('image/hero_image.html'); /* Placeholder if you manage images via CSS */
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 30px; /* Space between image and text */
+    border-radius: 8px;
+    
+}
+.hero-content {
+    position: relative; /* If image is background, content needs to be on top */
+    z-index: 1;
+}
+.hero h1 {
+    color: var(--secondary-color);
+    font-size: 2.8rem; /* Larger for hero */
+    margin-bottom: 0.5em;
+}
+.hero .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin-bottom: 1.5em;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.hero-search-form {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 0 auto 1.5em auto;
+}
+.hero-search-form .form-group {
+    flex: 1 1 20px; /* Flex grow, shrink, basis */
+}
+.hero-search-form select,
+.hero-search-form input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: var(--font-primary);
+}
+.hero-search-form select:focus,
+.hero-search-form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(111, 186, 44, 0.25);
+}
+.hero-search-form button {
+    flex: 0 0 auto; /* Don't grow or shrink, use content size */
+    padding: 15px 30px;
+}
+.hero-meta {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+
+
+/* Map Search Section */
+.map-search .section-subtitle {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+.japan-map-placeholder {
+    min-height: 400px; /* Adjust as needed */
+    background-color: #e9ecef; /* Placeholder color */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* In a real implementation, this would be an SVG map or a library like Mapbox/Leaflet */
+}
+.area-links {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 20px; /* row-gap column-gap */
+}
+.area-links a {
+    font-weight: 500;
+}
+
+/* New Teachers Section (Carousel) */
+.teacher-carousel {
+    display: flex; /* Basic setup, a real carousel needs JS */
+    gap: 20px;
+    overflow-x: auto; /* Allow horizontal scrolling for now */
+    padding-bottom: 20px; /* For scrollbar visibility */
+    margin-bottom: 30px;
+}
+.teacher-card {
+    flex: 0 0 280px; /* Fixed width for cards */
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.teacher-image-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #ccc; /* Placeholder */
+    margin: 0 auto 15px auto;
+    overflow: hidden; /* If using <img> inside */
+}
+.teacher-card h4 {
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+.teacher-card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+
+/* How To Use Section */
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.step-item {
+    text-align: center;
+    padding: 20px;
+}
+.step-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto;
+}
+.step-icon img {
+    width: 120px; /* Adjust as needed */
+    height: 120px;
+    margin: 0 auto 15px auto;
+}
+.step-item h3 {
+    margin-bottom: 10px;
+}
+
+/* Service Details Section */
+.service-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Main content and aside */
+    gap: 40px;
+    align-items: start; /* Align items to the top */
+}
+.service-details article h3 { color: var(--primary-color); }
+.service-links { margin-top: 20px; }
+.service-links .text-link { margin-right: 20px; }
+.important-notes {
+    background-color: var(--light-gray-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid var(--accent-color);
+}
+.important-notes h4 {
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+.important-notes p { font-size: 0.9rem; }
+
+/* Pricing CTA Section */
+.pricing-cta-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+.pricing-cta-text h2 {
+    margin-bottom: 0.75em;
+}
+.pricing-cta-text p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+.pricing-cta-box {
+    background-color: rgba(255,255,255, 0.15); /* Semi-transparent white */
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+}
+.system-fee-label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+.system-fee-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.tax-note {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+.pricing-cta-box .btn-light {
+    margin-bottom: 10px;
+}
+
+
+/* About Teachers Section */
+.about-teachers-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+.section-title-left { text-align: left; } /* Specific alignment for this section title */
+.about-teachers-text p {
+    margin-bottom: 1.5em;
+}
+.illustration-placeholder { /* For the image on the right */
+    min-height: 300px;
+    background-color: #e0e0e0; /* Placeholder */
+    border-radius: 8px;
+    /* background-image: url('images/about_teachers_illustration.svg'); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
+    /* background-position: center; */
+}
+
+/* More Info Links (Quick Links) */
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.quick-link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    text-align: center;
+    color: var(--text-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.quick-link-item:hover, .quick-link-item:focus {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.quick-link-icon {
+    width: 50px; /* Adjust as needed */
+    height: 50px;
+    margin-bottom: 15px;
+}
+.quick-link-item span {
+    font-weight: 700;
+}
+
+/* Benefits Comparison Section */
+.benefits-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+.benefits-columns .column h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+.benefits-columns .column ul {
+    list-style: disc;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.benefits-columns .column ul li {
+    margin-bottom: 10px;
+}
+.benefits-columns .column .btn { margin-top: 20px; }
+.benefits-columns .column .text-link { margin-top: 15px; }
+
+/* Language List Visual Section */
+.language-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.language-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: var(--text-color);
+}
+.language-item:hover, .language-item:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.language-item img {
+    width: 60px; /* Flag size */
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 4px; /* Soften flag edges */
+}
+.language-item span {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+.site-footer-container {
+    background-color: var(--secondary-color); /* Dark green for footer */
+    color: var(--light-text-color);
+}
+.footer-top {
+    padding: 60px 0 30px 0;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+.footer-column h4 {
+    color: var(--light-text-color);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+.footer-column p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.9;
+}
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+.footer-column ul li a {
+    color: var(--light-text-color);
+    text-decoration: none;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+.footer-column ul li a:hover,
+.footer-column ul li a:focus {
+    opacity: 1;
+    text-decoration: underline;
+}
+.footer-badges {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.footer-badges img {
+    max-height: 50px;
+}
+.footer-bottom {
+    background-color: rgba(0,0,0,0.1); /* Slightly darker shade */
+    padding: 20px 0;
+    text-align: center;
+}
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .service-content,
+    .pricing-cta-content,
+    .about-teachers-container,
+    .benefits-columns {
+        grid-template-columns: 1fr; /* Stack columns */
+    }
+    .about-teachers-image { order: -1; margin-bottom: 30px; } /* Image on top for this section */
+    .hero-search-form {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .hero-search-form .form-group,
+    .hero-search-form button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.3rem; }
+
+    .section-padding { padding: 30px 0; }
+
+    .global-nav .nav-menu {
+        display: none; /* Hide for mobile toggle */
+        flex-direction: column;
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        width: 100%;
+        background-color: var(--background-color);
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        padding: 10px 0;
+        border-top: 1px solid var(--border-color);
+    }
+    .global-nav .nav-menu.is-active { /* JS will toggle this class */
+        display: flex;
+    }
+    .global-nav .nav-menu li { width: 100%; }
+    .global-nav .nav-menu li a {
+        display: block; /* Full width clickable */
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .global-nav .nav-menu li:last-child a { border-bottom: none; }
+    .global-nav .dropdown-menu {
+        position: static; /* Reset for mobile */
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        padding-left: 20px; /* Indent dropdown items */
+    }
+    .global-nav .dropdown:hover .dropdown-menu { display: none; } /* Disable hover for mobile */
+    .global-nav .dropdown a[aria-haspopup="true"] { /* Style toggle for dropdown */
+      /* Potentially add an icon or similar indicator for mobile */
+    }
+    .global-nav .dropdown.is-open .dropdown-menu { display: block; } /* JS Toggles this */
+
+    .nav-toggle { display: block; }
+    .header-actions .btn { display: none; } /* Hide desktop buttons on small screens */
+    .header-actions .search-icon-mobile { display: block; margin-left: 10px;}
+
+    .hero h1 { font-size: 2.2rem; }
+    .hero .subtitle { font-size: 1.1rem; }
+
+    .map-search .area-links { gap: 5px 10px; }
+    .map-search .area-links a { font-size: 0.9rem; }
+}
+
+@media (max-width: 576px) {
+    .hero-search-form { padding: 15px; }
+    .hero-search-form select,
+    .hero-search-form input[type="text"],
+    .hero-search-form button {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    .footer-grid {
+        grid-template-columns: 1fr; /* Stack all footer columns */
+        text-align: center;
+    }
+    .footer-column ul {
+        padding-left: 0;
+    }
+}
+
+/* Accessibility Improvements */
+	*:focus-visible { /* Modern focus outline for keyboard users */
+	    outline: 3px solid var(--accent-color);
+	    outline-offset: 2px;
+	}
+	.global-nav .nav-menu li a:focus,
+	.global-nav .dropdown-menu li a:focus {
+	    background-color: rgba(111, 186, 44, 0.2); /* More visible focus */
+	}
+
+/* Placeholder element styles */
+	.hero-image-placeholder,
+	.feature-icon-placeholder,
+	.japan-map-placeholder,
+	.teacher-image-placeholder,
+	.illustration-placeholder {
+	    /* These styles are for visual representation during development */
+	    /* Ensure actual images/icons are implemented for production */
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    font-style: italic;
+	    color: #777;
+	 /*   border: 1px dashed #aaa;*/
+	}
+	/*.feature-icon-placeholder::after { content: "icon"; }*/
+	/*.japan-map-placeholder::after { content: "日本地図"; }/*
+	/*.teacher-image-placeholder::after { content: "先生写真"; }*/
+	/*.illustration-placeholder::after { content: "イラスト"; }
+	/*.hero-image-placeholder::after { content: "ヒーローイメージ"; }*/
+
+
+
+
+/*バーガーメニュー*/
+	.header-nav {
+	  position: relative;
+	  padding: 20px;
+	}
+
+	.hamburger {
+	  position: fixed;
+	  top: 10px;
+	  right: 20px;
+	  z-index: 100;
+	  width: 48px;
+	  height: 48px;
+	  border: none;
+	  background: transparent;
+	  cursor: pointer;
+	}
+
+	.hamburger__line {
+	  position: absolute;
+	  left: 11px;
+	  width: 26px;
+	  height: 2px;
+	  background-color: #333;
+	  transition: all .4s;
+	}
+
+	.hamburger__line:nth-of-type(1) {
+	  top: 14px;
+	}
+	.hamburger__line:nth-of-type(2) {
+	  top: 23px;
+	}
+	.hamburger__line:nth-of-type(3) {
+	  top: 32px;
+	}
+
+/* メニューオープン時 */
+	.hamburger.active .hamburger__line:nth-of-type(1) {
+	  transform: translateY(9px) rotate(-45deg);
+	}
+	.hamburger.active .hamburger__line:nth-of-type(2) {
+	  opacity: 0;
+	}
+	.hamburger.active .hamburger__line:nth-of-type(3) {
+	  transform: translateY(-9px) rotate(45deg);
+	}
+
+	.nav {
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 300px;
+	  height: 100vh;
+	  background-color: #fff;
+	  box-shadow: 2px 0 4px rgba(0,0,0,.1);
+	  transform: translateX(-100%);
+	  transition: transform .4s;
+	  z-index: 90;
+	}
+
+	.nav.active {
+	  transform: translateX(0);
+	}
+
+	.nav__list {
+	  margin: 0;
+	  padding: 20px 0 0;
+	  list-style: none;
+	}
+
+	.nav__item {
+	  padding: 0 20px;
+	}
+
+	.nav__link {
+	  display: block;
+	  padding: 15px 0;
+	  color: #333;
+	  text-decoration: none;
+	  border-bottom: 1px solid #eee;
+	}
+
+/*container レスポンシブ　追加*/
+@media (min-width: 1536px) {
+    .container {
+        max-width: 1536px;
+    }
+}
+@media (min-width: 1280px) {
+    .container {
+        /* max-width: 1280px; */
+    }
+}
+
+
+
+/* 新メニュー */
+
+
+        /* ラッパーと基本色の定義 (Canvasのコードから抜粋) */
+        #ouchi-sensei-tailwind-wrapper {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; 
+        }
+        :root {
+            --hs-base-color: #4a7d1d; 
+            --hs-base-color-hover: #3d6817;
+        }
+        #ouchi-sensei-tailwind-wrapper .text-hs-base-color { color: var(--hs-base-color); }
+        #ouchi-sensei-tailwind-wrapper .bg-hs-base-color { background-color: var(--hs-base-color); }
+        #ouchi-sensei-tailwind-wrapper .hover\:bg-hs-base-color-hover:hover { background-color: var(--hs-base-color-hover); }
+        
+        /* ヘッダーとナビゲーションに特化したスタイル */
+        /* Tailwind CSSのクラスが主ですが、カスタムスタイルがあればここに記述 */
+        /* 例: #ouchi-sensei-tailwind-wrapper header { ... } */
+        /* 例: #ouchi-sensei-tailwind-wrapper #main-nav a { ... } */
+        /* 例: #ouchi-sensei-tailwind-wrapper #mobile-menu { ... } */
+
+        /* JavaScriptでhiddenクラスをトグルするため、デモ用に.hiddenスタイルを定義 */
+        .hidden {
+            display: none;
+        }
+
+
+/* 新メニュー 20250624*/
+
+
+
+/* Accordion, chart, and step-diagram styles for TeacherFaq */
+
+.brand-green { color: #4a7d1d; }
+.bg-brand-green { background-color: #4a7d1d; }
+.hover-bg-brand-green-dark:hover { background-color: #3b6617; }
+.border-brand-green-light { border-color: #a7d78f; }
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding-top 0.3s ease-out, padding-bottom 0.3s ease-out;
+}
+.accordion-item.open .accordion-content {
+    max-height: 1200px; /* Adjusted for potentially longer content with chart/diagram */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.accordion-button svg {
+    transition: transform 0.3s ease-out;
+}
+.accordion-item.open .accordion-button svg {
+    transform: rotate(180deg);
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px; /* Max width for donut chart */
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px; /* Fixed height for donut chart */
+    max-height: 300px;
+}
+@media (max-width: 640px) {
+    .chart-container {
+        max-width: 250px;
+        height: 250px;
+        max-height: 250px;
+    }
+}
+.step-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem; /* Space between step and arrow */
+}
+.step-diagram-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    background-color: #e9f5e2; /* Light green background for steps */
+    border: 1px solid #a7d78f; /* Light green border */
+    border-radius: 0.5rem;
+    text-align: center;
+    min-width: 200px;
+    justify-content: center;
+}
+.step-diagram-arrow {
+    font-size: 1.5rem; /* Size of the arrow */
+    color: #4a7d1d; /* Brand green for arrow */
+    line-height: 1;
+}
+@media (min-width: 768px) { /* md breakpoint */
+    .step-diagram {
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem; /* Space between items */
+    }
+    .step-diagram-item {
+         min-width: 180px;
+    }
+    .step-diagram-arrow {
+        transform: rotate(-90deg); /* Rotate arrow for horizontal layout */
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}
+
+
+
