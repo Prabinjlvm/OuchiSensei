@@ -60,6 +60,7 @@ body.aboutfess-pricing-body { /* 既存スタイルと競合を避けるため�
     border-bottom: 1px solid #eee; /* 仮 */
 }
 .aboutfess-header h1 {
+    font-weight: bold;
     font-size: 2.3rem;
     color: #333;
     text-align: center;
