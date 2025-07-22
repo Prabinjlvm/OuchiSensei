@@ -409,7 +409,7 @@ const TeacherList = () => {
                       />
                       <div className="md:hidden mt-2">
                         <h3 className="text-lg font-semibold text-green-700">
-                          <Link to={`/teacherprofile?id=${teacher.id}&page=${currentPage}`} className="hover:underline">{teacher.name}</Link>
+                          <Link to={`/teacherprofile?id=${teacher.id}`} className="hover:underline">{teacher.name}</Link>
                         </h3>
                         <p className="text-xs text-gray-500">ID: {teacher.id}</p>
                       </div>
@@ -417,7 +417,7 @@ const TeacherList = () => {
                     <div className="md:w-1/2 p-4">
                       <div className="hidden md:block mb-2">
                         <h3 className="text-xl font-semibold text-green-700">
-                          <Link to={`/teacherprofile?id=${teacher.id}&page=${currentPage}`} className="hover:underline">{teacher.first_name} {teacher.last_name}</Link>
+                          <Link to={`/teacherprofile?id=${teacher.id}`} className="hover:underline">{teacher.first_name} {teacher.last_name}</Link>
                         </h3>
                         <p className="text-xs text-gray-500">ID: {teacher.id}</p>
                       </div>

@@ -233,7 +233,7 @@ export default function TeacherPasswordReset() {
               <a href="#" className="logo">
                 Ouchi-Sensei
               </a>
-              <h1>{languageStrings[lang].title}</h1>
+              <h1 style={{fontWeight:"bold"}}>{languageStrings[lang].title}</h1>
               <p>{languageStrings[lang].instruction}</p>
             </header>
             {showMessage && (
@@ -241,7 +241,7 @@ export default function TeacherPasswordReset() {
             )}
             <form id="password-reset-form" onSubmit={handleSubmit} autoComplete="off">
               <div className="form-group">
-                <label htmlFor="email">{languageStrings[lang].emailLabel}</label>
+                <label htmlFor="email" style={{fontWeight:"bold"}}>{languageStrings[lang].emailLabel}</label>
                 <input
                   type="email"
                   id="email"
@@ -260,7 +260,7 @@ export default function TeacherPasswordReset() {
                 type="button"
                 className="back-btn"
                 onClick={() => navigate('/teacher-login')}
-                style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: 500, cursor: 'pointer', padding: 0 }}
+                style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: 500, cursor: 'pointer', padding: 0, fontWeight:"bold" }}
               >
                 <i className="fas fa-arrow-left" /> {languageStrings[lang].backLink}
               </button>

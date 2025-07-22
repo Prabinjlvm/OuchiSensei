@@ -3,6 +3,7 @@ import './TeacherProfile.css';
 import { useLocation } from 'react-router-dom';
 import teachers from './teachers';
 import { getAllMuncipalities, getAllPrefectures, getAllTeachers } from '../../APIs/GET';
+import { getTeacherDetails } from '../../APIs/GET';
 
 export default function TeacherProfile() {
   const location = useLocation();
@@ -14,9 +15,7 @@ export default function TeacherProfile() {
   // if (location.search.startsWith('?=id')) {
   //   id = location.search.replace('?=id', '');
   // }
-  const pageParam = queryParams.get('page');
-  const page = pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : 1;
-  const [currentPage, setCurrentPage] = useState(Number(page) || 1);
+ 
   const [teachers, setTeachers] = useState([]);
   const [municipalities, setMunicipalities] = useState([]);
   const [prefectures, setPrefectures] = useState([]);
@@ -29,29 +28,31 @@ export default function TeacherProfile() {
   const teacherCardContainerRef = useRef(null);
   const scrollLeftBtnRef = useRef(null);
   const scrollRightBtnRef = useRef(null);
-  const TEACHERS_PER_PAGE = 3;
+  
 
-  console.log('Current page:', currentPage);
+
+
+const fetchTeacherDetails = async (id) => {
   console.log('Teacher ID:', id);
-  console.log('Teachers state from teachers profile page:', teachers);
+  try {
 
-  const fetchTeachers = async () => {
-    setTeachers([]);
-    try {
-      console.log('Fetching data for page:', currentPage);
-      const data = await getAllTeachers(currentPage, TEACHERS_PER_PAGE);
+    const data = await getTeacherDetails(id);
+    console.log('API response:', data);
 
-      if (data?.success && data?.data) {
-        setTeachers(data.data.teachers || []); // Update teachers state
-        console.log('Teachers fetched and set.');
-      } else {
-        setTeachers([]);
-        console.error('Unexpected response format:', data);
-      }
-    } catch (error) {
-      console.error('API call failed:', error);
+    if (data?.success && data?.data) {
+      console.log('Teacher details:', data.data);
+      setTeachers(data.data); 
+    } else {
+      console.error('Unexpected response format:', data);
+      setTeachers(null);
     }
-  };
+  } catch (error) {
+    console.error('API call failed:', error);
+    setTeachers(null);
+  }
+};
+
+  
 
   const fetchMunicipalities = async () => {
     try {
@@ -87,10 +88,10 @@ export default function TeacherProfile() {
   };
 
   useEffect(() => {
-    fetchTeachers();
+    fetchTeacherDetails(id);
     fetchMunicipalities();
     fetchPrefectures();
-  }, [currentPage]);
+  }, [id]);
 
   const getMunicipalityName = (ids) => {
     console.log('Teacher Municipality IDs:', ids);
@@ -148,7 +149,7 @@ export default function TeacherProfile() {
     }
   }, []);
 
-  const teacher = teachers.find((t) => t.id === id);
+  const teacher = teachers && teachers.id === id ? teachers : null;
   console.log('Teacher found as listed:', teacher);
 
   // If no teacher is found, display a "Teacher not found" message
@@ -161,8 +162,8 @@ export default function TeacherProfile() {
     let message = '';
     switch (type) {
       case 'trial': message = '体験レッスンのお申し込みに進みます。'; break;
-      case 'cart': message = `${teacher?.first_name}をマイ先生カートに追加しました。`; break;
-      case 'question': message = `${teacher?.first_name}への質問フォームに移動します。`; break;
+      case 'cart': message = `${teacher?.first_name} ${teacher?.last_name}をマイ先生カートに追加しました。`; break;
+      case 'question': message = `${teacher?.first_name} ${teacher?.last_name}への質問フォームに移動します。`; break;
       default: message = '';
     }
     setModalMessage(message + ' (これはデモです)');
@@ -199,7 +200,8 @@ export default function TeacherProfile() {
       `}</style>
       {/* Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', top: 20, left: '50%', transform: 'translateX(-50%)', backgroundColor: '#333', color: 'white', padding: '15px 25px', borderRadius: 8, boxShadow: '0 4px 15px rgba(0,0,0,0.2)', zIndex: 1001, transition: 'opacity 0.3s ease', opacity: 1 }}>
+        <div style={{ position: 'fixed', top: 20, left: '50%', transform: 'translateX(-50%)', backgroundColor: '#333', color: 'white', padding: 
+        '15px 25px', borderRadius: 8, boxShadow: '0 4px 15px rgba(0,0,0,0.2)', zIndex: 1001, transition: 'opacity 0.3s ease', opacity: 1 }}>
           {modalMessage}
         </div>
       )}
@@ -273,7 +275,7 @@ export default function TeacherProfile() {
             onerror="this.onerror=null; this.src='https://placehold.co/150x150/cccccc/333333?text=Ash+Sensei';"
           />
           <h1 className="text-3xl md:text-5xl font-bold mb-3">
-            {teacher?.first_name} プロフィール (ID: {id})
+            {teacher?.first_name} {teacher?.last_name}プロフィール (ID: {id})
           </h1>
           <p className="text-xl md:text-2xl mb-2">
             英語で夢を叶えよう！福山・尾道・笠岡エリアの実力派講師
@@ -337,7 +339,7 @@ export default function TeacherProfile() {
               </a>
               <i className="fas fa-angle-right mx-2" />
             </li>
-            <li>{teacher?.first_name}</li>
+            <li>{teacher?.first_name} {teacher?.last_name}</li>
           </ol>
         </nav>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -767,7 +769,7 @@ export default function TeacherProfile() {
                       <i className="fas fa-comments mr-1 base-text-color" />
                       日本語レベル:
                     </strong>{" "}
-                    {teacher.jjapanese_language_skills}
+                    {teacher.japanese_language_skills}
                   </p>
                   <p>
                     <strong className="font-semibold">

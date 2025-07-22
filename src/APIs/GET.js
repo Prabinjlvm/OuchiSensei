@@ -45,3 +45,16 @@ const axiosInstance = axios.create({
   };
 
   getAllPrefectures();
+
+  export async function getTeacherDetails(teacher_id) {
+    try {
+      const response = await axiosInstance.post('/teacher/getTeacherDetails', {
+        teacher_id: teacher_id
+      });
+      console.log('Teacher details fetched successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching teacher details:', error);
+      throw error;
+    }
+  }
