@@ -31,7 +31,7 @@ const axiosInstance = axios.create({
     }
   };
 
-  getAllMuncipalities();
+  
 
   export const getAllPrefectures = async () => {
     try {
@@ -44,7 +44,7 @@ const axiosInstance = axios.create({
     }
   };
 
-  getAllPrefectures();
+  
 
   export async function getTeacherDetails(teacher_id) {
     try {
@@ -58,3 +58,8 @@ const axiosInstance = axios.create({
       throw error;
     }
   }
+
+
+  axios.get('https://japan-api.ninja/api/v1/iso/13')
+  .then(res => console.log(res.data))
+  .catch(err => console.error(err.response?.status, err.response?.data));
