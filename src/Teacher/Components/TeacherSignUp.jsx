@@ -33,12 +33,12 @@ const TeacherRegistrationForm = () => {
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
   const [prefectureList, setPrefectureList] = useState([]);
   const [municipalityList, setMunicipalityList] = useState([]);
-  console.log("municipalityList", municipalityList);
+  
   // Fetch prefectures on component mount
   const fetchPrefectures = async () => {
     try {
-      const data = await getAllPrefectures(); // API call
-      setPrefectureList(data.prefectures); // Set data to state
+      const data = await getAllPrefectures();
+      setPrefectureList(data.prefectures);
     } catch (error) {
       console.error("Failed to fetch prefectures:", error);
     }
@@ -47,8 +47,8 @@ const TeacherRegistrationForm = () => {
   // Fetch municipalities based on selected prefecture
   const fetchMunicipalities = async () => {
     try {
-      const data = await getAllMuncipalities(); // API call
-      setMunicipalityList(data.municipalities); // Set data to state
+      const data = await getAllMuncipalities();
+      setMunicipalityList(data.municipalities);
     } catch (error) {
       console.error("Failed to fetch municipalities:", error);
     }
@@ -70,68 +70,66 @@ const TeacherRegistrationForm = () => {
 
 
   const [formData, setFormData] = useState({
+    teacher_id: '',
     email: '',
-    password: '',
-    password_confirm: '',
-    first_name: '',
-    last_name: '',
-    prefecture: '',
-    city: '',
-    address: '',
-    phone: '',
-    birth_year: '',
-    birth_month: '',
-    birth_day: '',
-    gender: '',
+    dob: '',
+    sex: '',
     nationality: '',
     native_language: '',
-    departure_year: '',
-    departure_month: '',
-    id_front: null,
-    id_back: null,
-    email2: '',
-    share_phone: false,
-    share_email2: false,
-    profile_photo: null,
+    Japan_departure: '',
+    mobile_number_public_status: false,
+    secondary_email: '',
+    email_address_public_status: false,
+    education: '',
+    major: '',
     education_level: '',
     major: '',
-    education_institution: '',
+    institution_name: '',
     occupation: '',
+    current_occupation: '',
     industry: '',
     occupation_detail: '',
-    japanese_skill: '',
-    years_in_japan: '',
-    japanese_lesson_ok: false,
-    japanese_email_ok: false,
-    lang1: '',
-    is_native1: '',
-    lang2: '',
-    is_native2: '',
+    Japanese_language_skills: '',
+    Japan_live_ymd: '',
+    lesson_available_in_japan: false,
+    email_communication_in_japan: false,
+    lesson_language_1: '',
+    lesson_language_1_native: '',
+    lesson_language_2: '',
+    lesson_language_2_native: '',
+    lesson_language_3: '',
+    lesson_language_3_native: '',
     teaching_experience: '',
-    lesson_target: [],
-    lesson_level: [],
+    trial_lesson_fee: '',
+    one_on_one_lesson_fee: '',
+    group_lesson_fee: '',
+    available_lesson_time: '',
+    eligible_students: '',
+    target_level: '',
     beginner_welcome: false,
-    lesson_type: [],
-    test_prep: [],
-    eng_cert: [],
-    trial_fee: '',
-    private_fee: '',
-    group_fee: '',
-    online_fee: '',
-    schedule: {},
-    location_type: [],
-    landmark: '',
-    station_negotiable: false,
-    hobbies: '',
-    movies: '',
-    music: '',
-    food: '',
-    love_japan: '',
-    message: '',
-    terms: false,
-    delete_request: false
+    teach_content: '',
+    experience_in_preparation_english_exam: '',
+    English_teaching_qualification: '',
+    available_lesson_kanto_area :'',
+    available_lesson_kansai_area: '',
+    landmark_desired_location: '',
+    intention_to_discuss_location:'',
+    lesson_location: '', 
+    online_lesson:'',
+    online_lesson_fees: '',
+    hobby_interest: '',
+    favorite_movie: '',
+    favorite_music: '',
+    favorite_food: '',
+    like_about_japan: '',
+    message_to_students: '',
+    terms_and_conditions: '',
+    data_deletion_request: '',
+    disclosure_period: '',
+    profile_photo: '',
+   
   });
-
+  console.log("formData from step1", formData);
   const totalSteps = 6;
 
   const allPrefectures = {
@@ -307,7 +305,8 @@ const TeacherRegistrationForm = () => {
   const [selectedPrefForStation, setSelectedPrefForStation] = useState(null);
   const [selectedLine, setSelectedLine] = useState(null);
   const [selectedPrefForArea, setSelectedPrefForArea] = useState(null);
-  const [teacherId, setTeacherId] = useState(null);
+  const [teacher_id, setTeacherId] = useState(null);
+  console.log('teacher_id', teacher_id);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [countries, setCountries] = useState([]);
@@ -451,6 +450,7 @@ const TeacherRegistrationForm = () => {
   const nextStep = async (step) => {
     setError('');
     if (!validateStep(currentStep)) return;
+
     if (step <= totalSteps) {
       setLoading(true);
       try {
@@ -469,8 +469,10 @@ const TeacherRegistrationForm = () => {
           console.log('[Step 1] Sending createTeacher payload:', payload);
           const res = await createTeacher(payload);
           console.log('[Step 1] createTeacher response:', res);
+
           if (res && (res.id || res.teacherId || res._id)) {
-            setTeacherId(res.id || res.teacherId || res._id);
+            const teacherId = res.UserId.id;
+            setTeacherId(teacherId);
             setCurrentStep(step);
             window.scrollTo(0, 0);
             console.log('[Step 1] Teacher created, moving to step', step);
@@ -482,21 +484,30 @@ const TeacherRegistrationForm = () => {
             setError(res?.message || 'Failed to create teacher account.');
             console.error('[Step 1] Error creating teacher:', res);
           }
-        } else if (currentStep > 1) {
-          // Step 2+: Update teacher additional details
+        } else if (currentStep === 6) {
+          // Final Step (Step 6): Save all additional details
           const details = { ...formData };
-          if (teacherId) details.teacherId = teacherId;
+          if (teacher_id) details.teacher_id = teacher_id;
           console.log(`[Step ${currentStep}] Sending teacherAdditionalDetails payload:`, details);
           const res = await teacherAdditionalDetails(details);
           console.log(`[Step ${currentStep}] teacherAdditionalDetails response:`, res);
+
           if (res && (res.success || res.status === 'ok')) {
-            setCurrentStep(step);
+            // Registration completed successfully
+            console.log('[Step 6] Registration completed successfully');
+            // You might want to redirect to a success page or show success message
+            // For example: router.push('/registration-success');
+            setCurrentStep(step); // This might be step 7 or completion page
             window.scrollTo(0, 0);
-            console.log(`[Step ${currentStep}] Details saved, moving to step`, step);
           } else {
-            setError(res?.message || 'Failed to save details.');
-            console.error(`[Step ${currentStep}] Error saving details:`, res);
+            setError(res?.message || 'Failed to complete registration.');
+            console.error(`[Step ${currentStep}] Error completing registration:`, res);
           }
+        } else {
+          // Steps 2-5: Just move to next step without API call
+          setCurrentStep(step);
+          window.scrollTo(0, 0);
+          console.log(`[Step ${currentStep}] Moving to step ${step} without API call`);
         }
       } catch (err) {
         setError('Network or server error.');
@@ -511,6 +522,7 @@ const TeacherRegistrationForm = () => {
     if (step >= 1) {
       setCurrentStep(step);
       window.scrollTo(0, 0);
+      console.log(`Moving back to step ${step}`);
     }
   };
 
@@ -1839,12 +1851,12 @@ const TeacherRegistrationForm = () => {
                     <select
                       id="nationality"
                       name="nationality"
-                      value={countriesList.find((country) => country.name === formData.nationality)?.code || ''}
+                      value={formData.nationality}
                       onChange={handleSelectChange}
                       required
                     >
                       <option value="">{languageStrings[currentLang].selectPlaceholder}</option>
-                      {Array.isArray(countriesList) && countriesList.map(country => (
+                      {Array.isArray(countriesList) && countriesList.map((country) => (
                         <option key={country.code} value={country.name}>
                           {country.name}
                         </option>
