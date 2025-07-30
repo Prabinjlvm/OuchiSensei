@@ -16,13 +16,37 @@ export async function createTeacher({ email, password, first_name, last_name, pr
 
 // Teacher Additional Details
 export async function teacherAdditionalDetails(details) {
-    const response = await axios.post(`${BASE_URL}/teacher/teacherAdditionalDetails`, details, {
-        headers: {
-            'Content-Type': 'application/json',
+    const formData = new FormData();
+  
+    // This simple loop is now correct because all values are strings or files
+    for (const key in details) {
+      if (details.hasOwnProperty(key) && details[key] !== null && details[key] !== undefined) {
+        formData.append(key, details[key]);
+      }
+    }
+  
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/teacher/teacherAdditionalDetails`,
+        formData,
+        {
+          // Axios will correctly set the multipart header
         }
-    });
-    return response.data;
-}
+      );
+  
+      console.log('Teacher Additional Details Response:', response.data);
+      return response.data;
+  
+    } catch (error) {
+      console.error('Error submitting teacher additional details:', error.response || error);
+      // Log the data that was sent for easy debugging
+      console.error('Data Sent:', Object.fromEntries(formData));
+      throw error;
+    }
+  }
+  
+  
+
 
 // Teacher Login
 export async function teacherLogin({ email, password }) {

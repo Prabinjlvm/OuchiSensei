@@ -3,6 +3,8 @@ import { createTeacher, teacherAdditionalDetails } from '../../APIs/POST';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import jaLocale from 'i18n-iso-countries/langs/ja.json';
+import { getAllMuncipalities, getAllPrefectures } from '../../APIs/GET';
+import { useNavigate } from 'react-router-dom';
 
 countries.registerLocale(enLocale);
 countries.registerLocale(jaLocale);
@@ -30,6 +32,44 @@ const TeacherRegistrationForm = () => {
   const [selectedAreas, setSelectedAreas] = useState({});
   const [selectedStations, setSelectedStations] = useState({});
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
+  const [prefectureList, setPrefectureList] = useState([]);
+  const [municipalityList, setMunicipalityList] = useState([]);
+  console.log("municipalityList", municipalityList);
+  // Fetch prefectures on component mount
+  const fetchPrefectures = async () => {
+    try {
+      const data = await getAllPrefectures();
+      setPrefectureList(data.prefectures);
+    } catch (error) {
+      console.error("Failed to fetch prefectures:", error);
+    }
+  };
+
+  // Fetch municipalities based on selected prefecture
+  const fetchMunicipalities = async () => {
+    try {
+      const data = await getAllMuncipalities();
+      setMunicipalityList(data.municipalities);
+    } catch (error) {
+      console.error("Failed to fetch municipalities:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrefectures();
+    fetchMunicipalities();
+  }, []);
+
+  //To filter municipalities based on selected prefecture
+  const getFilteredMunicipalities = () => {
+    if (!formData.prefecture) return [];
+    const selectedPrefectureCode = formData.prefecture.toString().padStart(2, '0');
+    return municipalityList.filter((municipality) =>
+      municipality.prefecture_code.startsWith(selectedPrefectureCode)
+    );
+  };
+
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -92,8 +132,14 @@ const TeacherRegistrationForm = () => {
     terms: false,
     delete_request: false
   });
-
+  console.log("formData from final step", formData);
   const totalSteps = 6;
+
+
+
+
+
+
 
   const allPrefectures = {
     hokkaido: { ja: "北海道", en: "Hokkaido" }, aomori: { ja: "青森県", en: "Aomori" }, iwate: { ja: "岩手県", en: "Iwate" }, miyagi: { ja: "宮城県", en: "Miyagi" }, akita: { ja: "秋田県", en: "Akita" }, yamagata: { ja: "山形県", en: "Yamagata" }, fukushima: { ja: "福島県", en: "Fukushima" }, ibaraki: { ja: "茨城県", en: "Ibaraki" }, tochigi: { ja: "栃木県", en: "Tochigi" }, gunma: { ja: "群馬県", en: "Gunma" }, saitama: { ja: "埼玉県", en: "Saitama" }, chiba: { ja: "千葉県", en: "Chiba" }, tokyo: { ja: "東京都", en: "Tokyo" }, kanagawa: { ja: "神奈川県", en: "Kanagawa" }, niigata: { ja: "新潟県", en: "Niigata" }, toyama: { ja: "富山県", en: "Toyama" }, ishikawa: { ja: "石川県", en: "Ishikawa" }, fukui: { ja: "福井県", en: "Fukui" }, yamanashi: { ja: "山梨県", en: "Yamanashi" }, nagano: { ja: "長野県", en: "Nagano" }, gifu: { ja: "岐阜県", en: "Gifu" }, shizuoka: { ja: "静岡県", en: "Shizuoka" }, aichi: { ja: "愛知県", en: "Aichi" }, mie: { ja: "三重県", en: "Mie" }, shiga: { ja: "滋賀県", en: "Shiga" }, kyoto: { ja: "京都府", en: "Kyoto" }, osaka: { ja: "大阪府", en: "Osaka" }, hyogo: { ja: "兵庫県", en: "Hyogo" }, nara: { ja: "奈良県", en: "Nara" }, wakayama: { ja: "和歌山県", en: "Wakayama" }, tottori: { ja: "鳥取県", en: "Tottori" }, shimane: { ja: "島根県", en: "Shimane" }, okayama: { ja: "岡山県", en: "Okayama" }, hiroshima: { ja: "広島県", en: "Hiroshima" }, yamaguchi: { ja: "山口県", en: "Yamaguchi" }, tokushima: { ja: "徳島県", en: "Tokushima" }, kagawa: { ja: "香川県", en: "Kagawa" }, ehime: { ja: "愛媛県", en: "Ehime" }, kochi: { ja: "高知県", en: "Kochi" }, fukuoka: { ja: "福岡県", en: "Fukuoka" }, saga: { ja: "佐賀県", en: "Saga" }, nagasaki: { ja: "長崎県", en: "Nagasaki" }, kumamoto: { ja: "熊本県", en: "Kumamoto" }, oita: { ja: "大分県", en: "Oita" }, miyazaki: { ja: "宮崎県", en: "Miyazaki" }, kagoshima: { ja: "鹿児島県", en: "Kagoshima" }, okinawa: { ja: "沖縄県", en: "Okinawa" }
@@ -408,10 +454,129 @@ const TeacherRegistrationForm = () => {
     setSelectedPrefecture(value);
     setFormData({ ...formData, prefecture: value, city: '' });
   };
+  const mapFormDataToFormInput = (formData) => {
+    // Helper function to format date (YYYY-MM-DD)
+    const formatDate = (year, month, day) => {
+      if (!year || !month || !day) return '';
+      const paddedMonth = month.toString().padStart(2, '0');
+      const paddedDay = day.toString().padStart(2, '0');
+      return `${year}-${paddedMonth}-${paddedDay}`;
+    };
+  
+    const boolToString = (value) => (value ? "1" : "0");
+    
+
+    const japaneseSkillMap = {
+      beginner: '1',
+      intermediate: '2', 
+      advanced: '3',
+      native: '4'
+    };
+    const nativeLanguageMap = (isNativeValue) => {
+      // Check for explicit 'yes' or true
+      if (isNativeValue === true || isNativeValue === 'yes') {
+        return '1'; // "Native"
+      }
+      // Check for explicit 'no' or false
+      if (isNativeValue === false || isNativeValue === 'no') {
+        return '2'; // "Not Native"
+      }
+      // For any other case (undefined, null, empty string), return null
+      return null; 
+    };
+  
+  
+    const experienceMap = {
+      "0-1": '1',
+      "1-2": '2',
+      "2-3": '3',
+      "3-4": '4',
+      "5-6": '5', 
+      "6-7": '6', 
+      "7+": '7'
+    };
+    const arrayToString = (arr) => (Array.isArray(arr) ? arr.join(',') : '');
+  
+    return {
+      teacher_id: teacherId || '',
+      email: formData.email || '',
+      dob: formatDate(formData.birth_year, formData.birth_month, formData.birth_day),
+      sex: formData.gender || '',
+      nationality: formData.nationality || '',
+      native_language: formData.native_language || '',
+      Japan_departure: formatDate(formData.departure_year, formData.departure_month, '01'),
+      mobile_number_public_status: boolToString(formData.share_phone),
+      secondary_email: formData.email2 || '',
+      email_address_public_status: boolToString(formData.share_email2),
+      education: formData.education_level || '',
+      major: formData.major || '',
+      institution_name: formData.education_institution || '',
+      occupation: formData.occupation || '',
+      current_occupation: formData.occupation || '',
+      industry: formData.industry || '',
+      occupation_details: formData.occupation_detail || '',
+      
+      // --- APPLY THE MAPPINGS ---
+      Japanese_language_skills: japaneseSkillMap[formData.japanese_skill] || '',
+      Japan_live_ymd: '2010-04-01',
+      teaching_experience: `${formData.teaching_experience} years` || '',
+      lesson_available_in_japan: boolToString(formData.japanese_lesson_ok),
+      email_communication_in_japan: boolToString(formData.japanese_email_ok),
+      lesson_language_1: formData.lang1 || '',
+      lesson_language_1_native: nativeLanguageMap(formData.is_native1),
+      lesson_language_2: formData.lang2 || '',
+      lesson_language_2_native: nativeLanguageMap(formData.is_native2), 
+      lesson_language_3: formData.lang3 || '',
+      lesson_language_3_native: nativeLanguageMap(formData.is_native3),
+      trial_lesson_fee: formData.trial_fee || '',
+      one_on_one_lesson_fee: formData.private_fee || '',
+      group_lesson_fee: formData.group_fee || '',
+      
+      // --- APPLY ensureArray TO ALL MULTI-SELECT FIELDS ---
+      eligible_students: arrayToString(formData.lesson_target),
+      target_level: arrayToString(formData.lesson_level),
+      teach_content: arrayToString(formData.lesson_type),
+      experience_in_preparation_english_exam: arrayToString(formData.test_prep),
+      English_teaching_qualification: arrayToString(formData.eng_cert),
+      lesson_location: arrayToString(formData.location_type),
+       beginners_welcome: boolToString(formData.beginner_welcome),
+      online_lesson: formData.online_fee ? "1" : "0",
+      
+      landmark_desired_location: formData.landmark || '',
+      intention_to_discuss_location: boolToString(formData.station_negotiable),
+      online_lesson: formData.online_fee ? "1" : "0",
+      online_lesson_fees: formData.online_fee || '',
+      hobby_interest: formData.hobbies || '',
+      favorite_movie: formData.movies || '',
+      favorite_music: formData.music || '',
+      favorite_food: formData.food || '',
+      like_about_japan: formData.love_japan || '',
+      message_to_students: formData.message || '',
+      terms_and_conditions: boolToString(formData.terms),
+      data_deletion_request: formData.delete_request ? "1" : "2",
+      
+      // The following fields from the Postman request might be missing from your form state.
+      // If they are required, add them.
+      available_lesson_kanto_area: '1',
+      available_lesson_kansai_area: '1',
+      disclosure_period: '2024-12-31',
+      available_lesson_time: 'Weekdays 18:00-21:00',
+      
+      profile_photo: formData.profile_photo || null
+    };
+  };
+
+
+  const formInput = mapFormDataToFormInput(formData);
+  console.log("formInput", formInput);
+
+  const navigate = useNavigate();
 
   const nextStep = async (step) => {
     setError('');
-    if (!validateStep(currentStep)) return;
+    // No changes needed here
+    if (currentStep !== 6 && !validateStep(currentStep)) return;
+  
     if (step <= totalSteps) {
       setLoading(true);
       try {
@@ -422,51 +587,67 @@ const TeacherRegistrationForm = () => {
             password: formData.password,
             first_name: formData.first_name,
             last_name: formData.last_name,
-            prefectures: prefectureCodes[formData.prefecture], // send as integer
+            prefectures: Number(formData.prefecture),
             municipality: formData.city,
             address: formData.address,
             mobile: formData.phone
           };
-          console.log('[Step 1] Sending createTeacher payload:', payload);
           const res = await createTeacher(payload);
           console.log('[Step 1] createTeacher response:', res);
-          if (res && (res.id || res.teacherId || res._id)) {
-            setTeacherId(res.id || res.teacherId || res._id);
+  
+          
+          // Consolidate the success check into one block.
+          if (res?.success && res?.UserId?.id) {
+            const teacherId = res.UserId.id;
+            setTeacherId(teacherId);
             setCurrentStep(step);
             window.scrollTo(0, 0);
-            console.log('[Step 1] Teacher created, moving to step', step);
-          } else if (res && res.success) {
-            setCurrentStep(step);
-            window.scrollTo(0, 0);
-            console.log('[Step 1] Teacher created (success true), moving to step', step);
+            console.log('[Step 1] Teacher created successfully with ID, moving to step', step);
           } else {
-            setError(res?.message || 'Failed to create teacher account.');
-            console.error('[Step 1] Error creating teacher:', res);
+            
+            setError(res?.message || 'Registration failed: Server did not provide a user ID.');
+            console.error('[Step 1] Error creating teacher (success response but no ID):', res);
           }
-        } else if (currentStep > 1) {
-          // Step 2+: Update teacher additional details
-          const details = { ...formData };
-          if (teacherId) details.teacherId = teacherId;
-          console.log(`[Step ${currentStep}] Sending teacherAdditionalDetails payload:`, details);
-          const res = await teacherAdditionalDetails(details);
+        } else if (currentStep === 6) {
+          // Final Step: Save all additional details
+          const formInputData = mapFormDataToFormInput(formData);
+  
+          
+          if (teacherId) {
+            formInputData.teacher_id = teacherId.toString();
+          }
+  
+          console.log(`[Step ${currentStep}] Preparing teacherAdditionalDetails payload:`, formInputData);
+          const res = await teacherAdditionalDetails(formInputData);
           console.log(`[Step ${currentStep}] teacherAdditionalDetails response:`, res);
-          if (res && (res.success || res.status === 'ok')) {
-            setCurrentStep(step);
-            window.scrollTo(0, 0);
-            console.log(`[Step ${currentStep}] Details saved, moving to step`, step);
+  
+          
+          if (res?.success && res?.teacher_Id) {
+            console.log('[Step 6] Registration completed successfully with teacher_Id:', res.teacher_Id);
+            navigate('/teacher');
+            return;
           } else {
             setError(res?.message || 'Failed to save details.');
             console.error(`[Step ${currentStep}] Error saving details:`, res);
           }
+        } else {
+          // Steps 2-5
+          setCurrentStep(step);
+          window.scrollTo(0, 0);
+          console.log(`[Step ${currentStep}] Moving to step ${step} without API call`);
         }
       } catch (err) {
-        setError('Network or server error.');
+
+        const serverMessage = err.response?.data?.message || err.message;
+        setError(serverMessage || 'A network or server error occurred.');
         console.error(`[Step ${currentStep}] Exception:`, err);
       } finally {
         setLoading(false);
       }
     }
   };
+  
+
 
   const prevStep = (step) => {
     if (step >= 1) {
@@ -2824,13 +3005,21 @@ const TeacherRegistrationForm = () => {
                     {languageStrings[currentLang].backBtn}
                   </span>
                 </button>
-                <button 
-                  type="submit" 
+
+                <button
+                  type="submit"
                   className="hs-reg-btn"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default form submission
+                    console.log('[Button Click] Confirm button clicked');
+                    console.log('Current step:', currentStep);
+                    nextStep( currentStep); // Call your function
+                  }}
+                  disabled={loading}
                 >
                   <span data-lang-key="submitBtn">
-                    {languageStrings[currentLang].submitBtn}
-                  </span> 
+                    {loading ? 'Processing...' : languageStrings[currentLang].submitBtn}
+                  </span>
                   <i className="fa-solid fa-paper-plane"></i>
                 </button>
               </div>
