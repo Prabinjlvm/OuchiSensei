@@ -3,7 +3,6 @@ import { createTeacher, teacherAdditionalDetails } from '../../APIs/POST';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import jaLocale from 'i18n-iso-countries/langs/ja.json';
-import { getAllMuncipalities, getAllPrefectures } from '../../APIs/GET';
 
 countries.registerLocale(enLocale);
 countries.registerLocale(jaLocale);
@@ -31,105 +30,69 @@ const TeacherRegistrationForm = () => {
   const [selectedAreas, setSelectedAreas] = useState({});
   const [selectedStations, setSelectedStations] = useState({});
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
-  const [prefectureList, setPrefectureList] = useState([]);
-  const [municipalityList, setMunicipalityList] = useState([]);
-  
-  // Fetch prefectures on component mount
-  const fetchPrefectures = async () => {
-    try {
-      const data = await getAllPrefectures();
-      setPrefectureList(data.prefectures);
-    } catch (error) {
-      console.error("Failed to fetch prefectures:", error);
-    }
-  };
-
-  // Fetch municipalities based on selected prefecture
-  const fetchMunicipalities = async () => {
-    try {
-      const data = await getAllMuncipalities();
-      setMunicipalityList(data.municipalities);
-    } catch (error) {
-      console.error("Failed to fetch municipalities:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPrefectures();
-    fetchMunicipalities();
-  }, []);
-
-  //To filter municipalities based on selected prefecture
-  const getFilteredMunicipalities = () => {
-    if (!formData.prefecture) return [];
-    const selectedPrefectureCode = formData.prefecture.toString().padStart(2, '0');
-    return municipalityList.filter((municipality) =>
-      municipality.prefecture_code.startsWith(selectedPrefectureCode)
-    );
-  };
-
-
   const [formData, setFormData] = useState({
-    teacher_id: '',
     email: '',
-    dob: '',
-    sex: '',
+    password: '',
+    password_confirm: '',
+    first_name: '',
+    last_name: '',
+    prefecture: '',
+    city: '',
+    address: '',
+    phone: '',
+    birth_year: '',
+    birth_month: '',
+    birth_day: '',
+    gender: '',
     nationality: '',
     native_language: '',
-    Japan_departure: '',
-    mobile_number_public_status: false,
-    secondary_email: '',
-    email_address_public_status: false,
-    education: '',
-    major: '',
+    departure_year: '',
+    departure_month: '',
+    id_front: null,
+    id_back: null,
+    email2: '',
+    share_phone: false,
+    share_email2: false,
+    profile_photo: null,
     education_level: '',
     major: '',
-    institution_name: '',
+    education_institution: '',
     occupation: '',
-    current_occupation: '',
     industry: '',
     occupation_detail: '',
-    Japanese_language_skills: '',
-    Japan_live_ymd: '',
-    lesson_available_in_japan: false,
-    email_communication_in_japan: false,
-    lesson_language_1: '',
-    lesson_language_1_native: '',
-    lesson_language_2: '',
-    lesson_language_2_native: '',
-    lesson_language_3: '',
-    lesson_language_3_native: '',
+    japanese_skill: '',
+    years_in_japan: '',
+    japanese_lesson_ok: false,
+    japanese_email_ok: false,
+    lang1: '',
+    is_native1: '',
+    lang2: '',
+    is_native2: '',
     teaching_experience: '',
-    trial_lesson_fee: '',
-    one_on_one_lesson_fee: '',
-    group_lesson_fee: '',
-    available_lesson_time: '',
-    eligible_students: '',
-    target_level: '',
+    lesson_target: [],
+    lesson_level: [],
     beginner_welcome: false,
-    teach_content: '',
-    experience_in_preparation_english_exam: '',
-    English_teaching_qualification: '',
-    available_lesson_kanto_area :'',
-    available_lesson_kansai_area: '',
-    landmark_desired_location: '',
-    intention_to_discuss_location:'',
-    lesson_location: '', 
-    online_lesson:'',
-    online_lesson_fees: '',
-    hobby_interest: '',
-    favorite_movie: '',
-    favorite_music: '',
-    favorite_food: '',
-    like_about_japan: '',
-    message_to_students: '',
-    terms_and_conditions: '',
-    data_deletion_request: '',
-    disclosure_period: '',
-    profile_photo: '',
-   
+    lesson_type: [],
+    test_prep: [],
+    eng_cert: [],
+    trial_fee: '',
+    private_fee: '',
+    group_fee: '',
+    online_fee: '',
+    schedule: {},
+    location_type: [],
+    landmark: '',
+    station_negotiable: false,
+    hobbies: '',
+    movies: '',
+    music: '',
+    food: '',
+    love_japan: '',
+    message: '',
+    terms: false,
+    delete_request: false
   });
-  console.log("formData from step1", formData);
+
   const totalSteps = 6;
 
   const allPrefectures = {
@@ -305,63 +268,62 @@ const TeacherRegistrationForm = () => {
   const [selectedPrefForStation, setSelectedPrefForStation] = useState(null);
   const [selectedLine, setSelectedLine] = useState(null);
   const [selectedPrefForArea, setSelectedPrefForArea] = useState(null);
-  const [teacher_id, setTeacherId] = useState(null);
-  console.log('teacher_id', teacher_id);
+  const [teacherId, setTeacherId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [countries, setCountries] = useState([]);
   const [countriesList, setCountriesList] = useState([]);
 
   // Add prefectureCodes mapping at the top, after allPrefectures
-  // const prefectureCodes = {
-  //   hokkaido: 1,
-  //   aomori: 2,
-  //   iwate: 3,
-  //   miyagi: 4,
-  //   akita: 5,
-  //   yamagata: 6,
-  //   fukushima: 7,
-  //   ibaraki: 8,
-  //   tochigi: 9,
-  //   gunma: 10,
-  //   saitama: 11,
-  //   chiba: 12,
-  //   tokyo: 13,
-  //   kanagawa: 14,
-  //   niigata: 15,
-  //   toyama: 16,
-  //   ishikawa: 17,
-  //   fukui: 18,
-  //   yamanashi: 19,
-  //   nagano: 20,
-  //   gifu: 21,
-  //   shizuoka: 22,
-  //   aichi: 23,
-  //   mie: 24,
-  //   shiga: 25,
-  //   kyoto: 26,
-  //   osaka: 27,
-  //   hyogo: 28,
-  //   nara: 29,
-  //   wakayama: 30,
-  //   tottori: 31,
-  //   shimane: 32,
-  //   okayama: 33,
-  //   hiroshima: 34,
-  //   yamaguchi: 35,
-  //   tokushima: 36,
-  //   kagawa: 37,
-  //   ehime: 38,
-  //   kochi: 39,
-  //   fukuoka: 40,
-  //   saga: 41,
-  //   nagasaki: 42,
-  //   kumamoto: 43,
-  //   oita: 44,
-  //   miyazaki: 45,
-  //   kagoshima: 46,
-  //   okinawa: 47
-  // };
+  const prefectureCodes = {
+    hokkaido: 1,
+    aomori: 2,
+    iwate: 3,
+    miyagi: 4,
+    akita: 5,
+    yamagata: 6,
+    fukushima: 7,
+    ibaraki: 8,
+    tochigi: 9,
+    gunma: 10,
+    saitama: 11,
+    chiba: 12,
+    tokyo: 13,
+    kanagawa: 14,
+    niigata: 15,
+    toyama: 16,
+    ishikawa: 17,
+    fukui: 18,
+    yamanashi: 19,
+    nagano: 20,
+    gifu: 21,
+    shizuoka: 22,
+    aichi: 23,
+    mie: 24,
+    shiga: 25,
+    kyoto: 26,
+    osaka: 27,
+    hyogo: 28,
+    nara: 29,
+    wakayama: 30,
+    tottori: 31,
+    shimane: 32,
+    okayama: 33,
+    hiroshima: 34,
+    yamaguchi: 35,
+    tokushima: 36,
+    kagawa: 37,
+    ehime: 38,
+    kochi: 39,
+    fukuoka: 40,
+    saga: 41,
+    nagasaki: 42,
+    kumamoto: 43,
+    oita: 44,
+    miyazaki: 45,
+    kagoshima: 46,
+    okinawa: 47
+  };
 
   useEffect(() => {
     document.title = languageStrings[currentLang].pageTitle;
@@ -431,7 +393,7 @@ const TeacherRegistrationForm = () => {
 
   const handleSelectChange = (e) => {
     const { name, value } = e.target;
-
+  
     // Special handling for nationality to store the country name
     if (name === 'nationality') {
       const selectedCountry = countriesList.find((country) => country.code === value);
@@ -450,7 +412,6 @@ const TeacherRegistrationForm = () => {
   const nextStep = async (step) => {
     setError('');
     if (!validateStep(currentStep)) return;
-
     if (step <= totalSteps) {
       setLoading(true);
       try {
@@ -461,7 +422,7 @@ const TeacherRegistrationForm = () => {
             password: formData.password,
             first_name: formData.first_name,
             last_name: formData.last_name,
-            prefectures: Number(formData.prefecture), // send as integer
+            prefectures: prefectureCodes[formData.prefecture], // send as integer
             municipality: formData.city,
             address: formData.address,
             mobile: formData.phone
@@ -469,10 +430,8 @@ const TeacherRegistrationForm = () => {
           console.log('[Step 1] Sending createTeacher payload:', payload);
           const res = await createTeacher(payload);
           console.log('[Step 1] createTeacher response:', res);
-
           if (res && (res.id || res.teacherId || res._id)) {
-            const teacherId = res.UserId.id;
-            setTeacherId(teacherId);
+            setTeacherId(res.id || res.teacherId || res._id);
             setCurrentStep(step);
             window.scrollTo(0, 0);
             console.log('[Step 1] Teacher created, moving to step', step);
@@ -484,30 +443,21 @@ const TeacherRegistrationForm = () => {
             setError(res?.message || 'Failed to create teacher account.');
             console.error('[Step 1] Error creating teacher:', res);
           }
-        } else if (currentStep === 6) {
-          // Final Step (Step 6): Save all additional details
+        } else if (currentStep > 1) {
+          // Step 2+: Update teacher additional details
           const details = { ...formData };
-          if (teacher_id) details.teacher_id = teacher_id;
+          if (teacherId) details.teacherId = teacherId;
           console.log(`[Step ${currentStep}] Sending teacherAdditionalDetails payload:`, details);
           const res = await teacherAdditionalDetails(details);
           console.log(`[Step ${currentStep}] teacherAdditionalDetails response:`, res);
-
           if (res && (res.success || res.status === 'ok')) {
-            // Registration completed successfully
-            console.log('[Step 6] Registration completed successfully');
-            // You might want to redirect to a success page or show success message
-            // For example: router.push('/registration-success');
-            setCurrentStep(step); // This might be step 7 or completion page
+            setCurrentStep(step);
             window.scrollTo(0, 0);
+            console.log(`[Step ${currentStep}] Details saved, moving to step`, step);
           } else {
-            setError(res?.message || 'Failed to complete registration.');
-            console.error(`[Step ${currentStep}] Error completing registration:`, res);
+            setError(res?.message || 'Failed to save details.');
+            console.error(`[Step ${currentStep}] Error saving details:`, res);
           }
-        } else {
-          // Steps 2-5: Just move to next step without API call
-          setCurrentStep(step);
-          window.scrollTo(0, 0);
-          console.log(`[Step ${currentStep}] Moving to step ${step} without API call`);
         }
       } catch (err) {
         setError('Network or server error.');
@@ -522,7 +472,6 @@ const TeacherRegistrationForm = () => {
     if (step >= 1) {
       setCurrentStep(step);
       window.scrollTo(0, 0);
-      console.log(`Moving back to step ${step}`);
     }
   };
 
@@ -777,14 +726,14 @@ const TeacherRegistrationForm = () => {
         {days.map(day => (
           <div key={day} className="header">{languageStrings[currentLang][day]}</div>
         ))}
-
+        
         {timeSlots.map(time => (
           <React.Fragment key={time}>
             <div className="time-label">{languageStrings[currentLang][time]}</div>
             {days.map(day => (
               <div key={`${day}-${time}`} className="checkbox-container">
-                <input
-                  type="checkbox"
+                <input 
+                  type="checkbox" 
                   id={`schedule_${day}_${time}`}
                   name={`schedule_${day}_${time}`}
                   checked={formData.schedule?.[`${day}_${time}`] || false}
@@ -1506,7 +1455,7 @@ const TeacherRegistrationForm = () => {
   return (
     <div className="hs-reg-container">
       <style>{styles}</style>
-
+      
       <div className="hs-reg-top-bar">
         <header className="hs-reg-logo-header">
           <a href="https://dinfo.work/sensei/en/">
@@ -1514,15 +1463,15 @@ const TeacherRegistrationForm = () => {
           </a>
         </header>
         <div className="lang-switcher" id="lang-switcher">
-          <button
-            id="lang-ja"
+          <button 
+            id="lang-ja" 
             className={currentLang === 'ja' ? 'active' : ''}
             onClick={() => setCurrentLang('ja')}
           >
             JA
           </button>
-          <button
-            id="lang-en"
+          <button 
+            id="lang-en" 
             className={currentLang === 'en' ? 'active' : ''}
             onClick={() => setCurrentLang('en')}
           >
@@ -1535,9 +1484,9 @@ const TeacherRegistrationForm = () => {
         <div id="registration-form-container">
           <ul className="hs-reg-progress-bar" id="progress-bar">
             {[1, 2, 3, 4, 5, 6].map(step => (
-              <li
-                key={step}
-                data-step={step}
+              <li 
+                key={step} 
+                data-step={step} 
                 className={`${currentStep === step ? 'active' : ''} ${currentStep > step ? 'completed' : ''}`}
               >
                 <div className="step-icon">
@@ -1549,15 +1498,15 @@ const TeacherRegistrationForm = () => {
               </li>
             ))}
           </ul>
-
+    
           {error && <div style={{ color: 'var(--error-color)', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
           {loading && <div style={{ color: 'var(--primary-color)', marginBottom: '1rem', textAlign: 'center' }}>Processing...</div>}
           <form id="teacherRegForm" onSubmit={handleSubmit} noValidate>
             <h2 className="hs-reg-step-title" id="form-title">
-              {languageStrings[currentLang].stepDetails[currentStep - 1].title}
+              {languageStrings[currentLang].stepDetails[currentStep-1].title}
             </h2>
             <p className="hs-reg-step-subtitle" id="form-subtitle">
-              {languageStrings[currentLang].stepDetails[currentStep - 1].subtitle}
+              {languageStrings[currentLang].stepDetails[currentStep-1].subtitle}
             </p>
 
             {/* Step 1: Account Information */}
@@ -1571,45 +1520,45 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="email" data-lang-key="email">
                       {languageStrings[currentLang].email}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
                       value={formData.email}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                   </div>
                   <div className="hs-reg-form-group">
                     <label htmlFor="password" data-lang-key="password">
                       {languageStrings[currentLang].password}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
+                    <input 
+                      type="password" 
+                      id="password" 
+                      name="password" 
                       value={formData.password}
                       onChange={handleInputChange}
-                      required
-                      minLength="8"
+                      required 
+                      minLength="8" 
                     />
                   </div>
                   <div className="hs-reg-form-group">
                     <label htmlFor="password_confirm" data-lang-key="passwordConfirm">
                       {languageStrings[currentLang].passwordConfirm}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="password"
-                      id="password_confirm"
-                      name="password_confirm"
+                    <input 
+                      type="password" 
+                      id="password_confirm" 
+                      name="password_confirm" 
                       value={formData.password_confirm}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s1_title2">
                   {languageStrings[currentLang].s1_title2}
@@ -1619,35 +1568,35 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="first_name" data-lang-key="firstName">
                       {languageStrings[currentLang].firstName}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="text"
-                      id="first_name"
-                      name="first_name"
+                    <input 
+                      type="text" 
+                      id="first_name" 
+                      name="first_name" 
                       value={formData.first_name}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                   </div>
                   <div className="hs-reg-form-group">
                     <label htmlFor="last_name" data-lang-key="lastName">
                       {languageStrings[currentLang].lastName}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="text"
-                      id="last_name"
-                      name="last_name"
+                    <input 
+                      type="text" 
+                      id="last_name" 
+                      name="last_name" 
                       value={formData.last_name}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                   </div>
                   <div className="hs-reg-form-group">
                     <label htmlFor="prefecture" data-lang-key="prefecture">
                       {languageStrings[currentLang].prefecture}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="prefecture"
-                      name="prefecture"
+                    <select 
+                      id="prefecture" 
+                      name="prefecture" 
                       value={formData.prefecture}
                       onChange={handlePrefectureChange}
                       required
@@ -1655,9 +1604,9 @@ const TeacherRegistrationForm = () => {
                       <option value="" disabled selected>
                         {languageStrings[currentLang].selectPlaceholder}
                       </option>
-                      {prefectureList.map((pref) => (
-                        <option key={pref.id} value={pref.id}>
-                          {pref.name}
+                      {Object.keys(allPrefectures).map(key => (
+                        <option key={key} value={key}>
+                          {allPrefectures[key][currentLang]}
                         </option>
                       ))}
                     </select>
@@ -1666,12 +1615,12 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="city" data-lang-key="city">
                       {languageStrings[currentLang].city}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="city"
-                      name="city"
+                    <select 
+                      id="city" 
+                      name="city" 
                       value={formData.city}
                       onChange={handleSelectChange}
-                      required
+                      required 
                       disabled={!formData.prefecture}
                     >
                       {!formData.prefecture ? (
@@ -1683,11 +1632,20 @@ const TeacherRegistrationForm = () => {
                           <option value="" disabled selected>
                             {languageStrings[currentLang].selectPlaceholder}
                           </option>
-                          {getFilteredMunicipalities().map((municipality) => (
-                            <option key={municipality.id} value={municipality.id}>
-                              {municipality.name}
-                            </option>
-                          ))}
+                          {formData.prefecture && cityData[formData.prefecture] && 
+                            Array.isArray(cityData[formData.prefecture][currentLang]) && 
+                            cityData[formData.prefecture][currentLang].map((city, index) => {
+                              const enCities = cityData[formData.prefecture]['en'];
+                              const cityKey = Array.isArray(enCities) && enCities[index] 
+                                ? enCities[index].toLowerCase().replace(/ /g, '-')
+                                : city.toLowerCase().replace(/ /g, '-');
+                              return (
+                                <option key={cityKey} value={cityKey}>
+                                  {city}
+                                </option>
+                              );
+                            })
+                          }
                         </>
                       )}
                     </select>
@@ -1696,26 +1654,26 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="address" data-lang-key="address">
                       {languageStrings[currentLang].address}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="text"
-                      id="address"
-                      name="address"
+                    <input 
+                      type="text" 
+                      id="address" 
+                      name="address" 
                       value={formData.address}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                   </div>
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <label htmlFor="phone" data-lang-key="phone">
                       {languageStrings[currentLang].phone}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      name="phone" 
                       value={formData.phone}
                       onChange={handleInputChange}
-                      required
+                      required 
                       placeholder="09012345678"
                     />
                     <p className="hs-reg-help-text" data-lang-key="phoneHelp">
@@ -1724,18 +1682,18 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <div className="hs-reg-btn-nav">
                 <span></span>
-                <button
-                  type="button"
-                  className="hs-reg-btn"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn" 
                   onClick={() => nextStep(2)}
                   disabled={loading}
                 >
                   <span data-lang-key="nextBtn">
                     {languageStrings[currentLang].nextBtn}
-                  </span>
+                  </span> 
                   <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
@@ -1753,39 +1711,39 @@ const TeacherRegistrationForm = () => {
                       {languageStrings[currentLang].dob}<span className="hs-reg-required">*</span>
                     </label>
                     <div className="date-group">
-                      <select
-                        id="birth_year"
-                        name="birth_year"
+                      <select 
+                        id="birth_year" 
+                        name="birth_year" 
                         value={formData.birth_year}
                         onChange={handleSelectChange}
                         required
                       >
                         <option value="">Year</option>
-                        {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                        {Array.from({length: 100}, (_, i) => new Date().getFullYear() - i).map(year => (
                           <option key={year} value={year}>{year}</option>
                         ))}
                       </select>
-                      <select
-                        id="birth_month"
-                        name="birth_month"
+                      <select 
+                        id="birth_month" 
+                        name="birth_month" 
                         value={formData.birth_month}
                         onChange={handleSelectChange}
                         required
                       >
                         <option value="">Month</option>
-                        {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                        {Array.from({length: 12}, (_, i) => i + 1).map(month => (
                           <option key={month} value={month}>{month}</option>
                         ))}
                       </select>
-                      <select
-                        id="birth_day"
-                        name="birth_day"
+                      <select 
+                        id="birth_day" 
+                        name="birth_day" 
                         value={formData.birth_day}
                         onChange={handleSelectChange}
                         required
                       >
                         <option value="">Day</option>
-                        {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                        {Array.from({length: 31}, (_, i) => i + 1).map(day => (
                           <option key={day} value={day}>{day}</option>
                         ))}
                       </select>
@@ -1797,14 +1755,14 @@ const TeacherRegistrationForm = () => {
                     </label>
                     <div className="hs-reg-selectable-grid">
                       <div className="hs-reg-selectable-item">
-                        <input
-                          type="radio"
-                          id="gender_male"
-                          name="gender"
-                          value="male"
+                        <input 
+                          type="radio" 
+                          id="gender_male" 
+                          name="gender" 
+                          value="male" 
                           checked={formData.gender === 'male'}
                           onChange={handleInputChange}
-                          required
+                          required 
                         />
                         <label htmlFor="gender_male">
                           <span data-lang-key="genderMale">
@@ -1813,11 +1771,11 @@ const TeacherRegistrationForm = () => {
                         </label>
                       </div>
                       <div className="hs-reg-selectable-item">
-                        <input
-                          type="radio"
-                          id="gender_female"
-                          name="gender"
-                          value="female"
+                        <input 
+                          type="radio" 
+                          id="gender_female" 
+                          name="gender" 
+                          value="female" 
                           checked={formData.gender === 'female'}
                           onChange={handleInputChange}
                         />
@@ -1828,11 +1786,11 @@ const TeacherRegistrationForm = () => {
                         </label>
                       </div>
                       <div className="hs-reg-selectable-item">
-                        <input
-                          type="radio"
-                          id="gender_other"
-                          name="gender"
-                          value="other"
+                        <input 
+                          type="radio" 
+                          id="gender_other" 
+                          name="gender" 
+                          value="other" 
                           checked={formData.gender === 'other'}
                           onChange={handleInputChange}
                         />
@@ -1851,12 +1809,12 @@ const TeacherRegistrationForm = () => {
                     <select
                       id="nationality"
                       name="nationality"
-                      value={formData.nationality}
+                      value={countriesList.find((country) => country.name === formData.nationality)?.code || ''}
                       onChange={handleSelectChange}
                       required
                     >
                       <option value="">{languageStrings[currentLang].selectPlaceholder}</option>
-                      {Array.isArray(countriesList) && countriesList.map((country) => (
+                      {Array.isArray(countriesList) && countriesList.map(country => (
                         <option key={country.code} value={country.name}>
                           {country.name}
                         </option>
@@ -1867,10 +1825,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="native_language" data-lang-key="nativeLang">
                       {languageStrings[currentLang].nativeLang}
                     </label>
-                    <input
-                      type="text"
-                      id="native_language"
-                      name="native_language"
+                    <input 
+                      type="text" 
+                      id="native_language" 
+                      name="native_language" 
                       value={formData.native_language}
                       onChange={handleInputChange}
                     />
@@ -1880,27 +1838,27 @@ const TeacherRegistrationForm = () => {
                       {languageStrings[currentLang].departureDate}<span className="hs-reg-required">*</span>
                     </label>
                     <div className="date-group">
-                      <select
-                        id="departure_year"
-                        name="departure_year"
+                      <select 
+                        id="departure_year" 
+                        name="departure_year" 
                         value={formData.departure_year}
                         onChange={handleSelectChange}
                         required
                       >
                         <option value="">Year</option>
-                        {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                        {Array.from({length: 10}, (_, i) => new Date().getFullYear() + i).map(year => (
                           <option key={year} value={year}>{year}</option>
                         ))}
                       </select>
-                      <select
-                        id="departure_month"
-                        name="departure_month"
+                      <select 
+                        id="departure_month" 
+                        name="departure_month" 
                         value={formData.departure_month}
                         onChange={handleSelectChange}
                         required
                       >
                         <option value="">Month</option>
-                        {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                        {Array.from({length: 12}, (_, i) => i + 1).map(month => (
                           <option key={month} value={month}>{month}</option>
                         ))}
                       </select>
@@ -1908,7 +1866,7 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s2_title2">
                   {languageStrings[currentLang].s2_title2}
@@ -1921,57 +1879,57 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="id_front" data-lang-key="idFront">
                       {languageStrings[currentLang].idFront}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="file"
-                      id="id_front"
-                      name="id_front"
+                    <input 
+                      type="file" 
+                      id="id_front" 
+                      name="id_front" 
                       onChange={handleInputChange}
-                      accept="image/*"
-                      required
+                      accept="image/*" 
+                      required 
                     />
                   </div>
                   <div className="hs-reg-form-group">
                     <label htmlFor="id_back" data-lang-key="idBack">
                       {languageStrings[currentLang].idBack}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="file"
-                      id="id_back"
-                      name="id_back"
+                    <input 
+                      type="file" 
+                      id="id_back" 
+                      name="id_back" 
                       onChange={handleInputChange}
-                      accept="image/*"
-                      required
+                      accept="image/*" 
+                      required 
                     />
                   </div>
                 </div>
               </section>
-
+              
               <div className="hs-reg-btn-nav">
-                <button
-                  type="button"
-                  className="hs-reg-btn hs-reg-btn-secondary"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn hs-reg-btn-secondary" 
                   onClick={() => prevStep(1)}
                   disabled={loading}
                 >
-                  <i className="fa-solid fa-arrow-left"></i>
+                  <i className="fa-solid fa-arrow-left"></i> 
                   <span data-lang-key="backBtn">
                     {languageStrings[currentLang].backBtn}
                   </span>
                 </button>
-                <button
-                  type="button"
-                  className="hs-reg-btn"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn" 
                   onClick={() => nextStep(3)}
                   disabled={loading}
                 >
                   <span data-lang-key="nextBtn">
                     {languageStrings[currentLang].nextBtn}
-                  </span>
+                  </span> 
                   <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
             </div>
-
+            
             {/* Step 3: Background & Skills */}
             <div className={`hs-reg-form-step ${currentStep === 3 ? 'active' : ''}`} id="step-3">
               <section className="hs-reg-form-section">
@@ -1983,21 +1941,21 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="email2" data-lang-key="email2">
                       {languageStrings[currentLang].email2}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="email"
-                      id="email2"
-                      name="email2"
+                    <input 
+                      type="email" 
+                      id="email2" 
+                      name="email2" 
                       value={formData.email2}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                   </div>
                   <div className="hs-reg-selectable-grid">
                     <div className="hs-reg-selectable-item">
-                      <input
-                        type="checkbox"
-                        id="share_phone"
-                        name="share_phone"
+                      <input 
+                        type="checkbox" 
+                        id="share_phone" 
+                        name="share_phone" 
                         checked={formData.share_phone}
                         onChange={handleInputChange}
                       />
@@ -2008,10 +1966,10 @@ const TeacherRegistrationForm = () => {
                       </label>
                     </div>
                     <div className="hs-reg-selectable-item">
-                      <input
-                        type="checkbox"
-                        id="share_email2"
-                        name="share_email2"
+                      <input 
+                        type="checkbox" 
+                        id="share_email2" 
+                        name="share_email2" 
                         checked={formData.share_email2}
                         onChange={handleInputChange}
                       />
@@ -2024,7 +1982,7 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s3_title2">
                   {languageStrings[currentLang].s3_title2}
@@ -2034,12 +1992,12 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="profile_photo" data-lang-key="profilePhoto">
                       {languageStrings[currentLang].profilePhoto}
                     </label>
-                    <input
-                      type="file"
-                      id="profile_photo"
-                      name="profile_photo"
+                    <input 
+                      type="file" 
+                      id="profile_photo" 
+                      name="profile_photo" 
                       onChange={handleInputChange}
-                      accept="image/*"
+                      accept="image/*" 
                     />
                     <p className="hs-reg-help-text" data-lang-key="photoHelp">
                       {languageStrings[currentLang].photoHelp}
@@ -2047,7 +2005,7 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s3_title3">
                   {languageStrings[currentLang].s3_title3}
@@ -2057,9 +2015,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="education_level" data-lang-key="educationLevel">
                       {languageStrings[currentLang].educationLevel}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="education_level"
-                      name="education_level"
+                    <select 
+                      id="education_level" 
+                      name="education_level" 
                       value={formData.education_level}
                       onChange={handleSelectChange}
                       required
@@ -2071,9 +2029,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="major" data-lang-key="major">
                       {languageStrings[currentLang].major}
                     </label>
-                    <select
-                      id="major"
-                      name="major"
+                    <select 
+                      id="major" 
+                      name="major" 
                       value={formData.major}
                       onChange={handleSelectChange}
                       required
@@ -2085,10 +2043,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="education_institution" data-lang-key="institutionName">
                       {languageStrings[currentLang].institutionName}
                     </label>
-                    <input
-                      type="text"
-                      id="education_institution"
-                      name="education_institution"
+                    <input 
+                      type="text" 
+                      id="education_institution" 
+                      name="education_institution" 
                       value={formData.education_institution}
                       onChange={handleInputChange}
                     />
@@ -2097,9 +2055,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="occupation" data-lang-key="occupation">
                       {languageStrings[currentLang].occupation}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="occupation"
-                      name="occupation"
+                    <select 
+                      id="occupation" 
+                      name="occupation" 
                       value={formData.occupation}
                       onChange={handleSelectChange}
                       required
@@ -2111,9 +2069,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="industry" data-lang-key="industry">
                       {languageStrings[currentLang].industry}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="industry"
-                      name="industry"
+                    <select 
+                      id="industry" 
+                      name="industry" 
                       value={formData.industry}
                       onChange={handleSelectChange}
                       required
@@ -2125,38 +2083,38 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="occupation_detail" data-lang-key="occupationDetail">
                       {languageStrings[currentLang].occupationDetail}
                     </label>
-                    <input
-                      type="text"
-                      id="occupation_detail"
-                      name="occupation_detail"
+                    <input 
+                      type="text" 
+                      id="occupation_detail" 
+                      name="occupation_detail" 
                       value={formData.occupation_detail}
                       onChange={handleInputChange}
                     />
                   </div>
                 </div>
               </section>
-
+              
               <div className="hs-reg-btn-nav">
-                <button
-                  type="button"
-                  className="hs-reg-btn hs-reg-btn-secondary"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn hs-reg-btn-secondary" 
                   onClick={() => prevStep(2)}
                   disabled={loading}
                 >
-                  <i className="fa-solid fa-arrow-left"></i>
+                  <i className="fa-solid fa-arrow-left"></i> 
                   <span data-lang-key="backBtn">
                     {languageStrings[currentLang].backBtn}
                   </span>
                 </button>
-                <button
-                  type="button"
-                  className="hs-reg-btn"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn" 
                   onClick={() => nextStep(4)}
                   disabled={loading}
                 >
                   <span data-lang-key="nextBtn">
                     {languageStrings[currentLang].nextBtn}
-                  </span>
+                  </span> 
                   <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
@@ -2173,9 +2131,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="japanese_skill" data-lang-key="japaneseSkill">
                       {languageStrings[currentLang].japaneseSkill}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="japanese_skill"
-                      name="japanese_skill"
+                    <select 
+                      id="japanese_skill" 
+                      name="japanese_skill" 
                       value={formData.japanese_skill}
                       onChange={handleSelectChange}
                       required
@@ -2187,9 +2145,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="years_in_japan" data-lang-key="yearsInJapan">
                       {languageStrings[currentLang].yearsInJapan}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="years_in_japan"
-                      name="years_in_japan"
+                    <select 
+                      id="years_in_japan" 
+                      name="years_in_japan" 
                       value={formData.years_in_japan}
                       onChange={handleSelectChange}
                       required
@@ -2200,10 +2158,10 @@ const TeacherRegistrationForm = () => {
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <div className="hs-reg-selectable-grid" style={{ gridTemplateColumns: '1fr 1fr', maxWidth: '500px' }}>
                       <div className="hs-reg-selectable-item">
-                        <input
-                          type="checkbox"
-                          id="japanese_lesson_ok"
-                          name="japanese_lesson_ok"
+                        <input 
+                          type="checkbox" 
+                          id="japanese_lesson_ok" 
+                          name="japanese_lesson_ok" 
                           checked={formData.japanese_lesson_ok}
                           onChange={handleInputChange}
                         />
@@ -2214,10 +2172,10 @@ const TeacherRegistrationForm = () => {
                         </label>
                       </div>
                       <div className="hs-reg-selectable-item">
-                        <input
-                          type="checkbox"
-                          id="japanese_email_ok"
-                          name="japanese_email_ok"
+                        <input 
+                          type="checkbox" 
+                          id="japanese_email_ok" 
+                          name="japanese_email_ok" 
                           checked={formData.japanese_email_ok}
                           onChange={handleInputChange}
                         />
@@ -2229,7 +2187,7 @@ const TeacherRegistrationForm = () => {
                       </div>
                     </div>
                   </div>
-
+                  
                   <div className="hs-reg-grid-full">
                     <hr style={{ border: '1px solid var(--medium-gray)', margin: '1rem 0' }} />
                   </div>
@@ -2238,9 +2196,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="lang1" data-lang-key="lessonLang1">
                       {languageStrings[currentLang].lessonLang1}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="lang1"
-                      name="lang1"
+                    <select 
+                      id="lang1" 
+                      name="lang1" 
                       value={formData.lang1}
                       onChange={handleSelectChange}
                       required
@@ -2252,9 +2210,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="is_native1" data-lang-key="isNative1">
                       {languageStrings[currentLang].isNative1}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="is_native1"
-                      name="is_native1"
+                    <select 
+                      id="is_native1" 
+                      name="is_native1" 
                       value={formData.is_native1}
                       onChange={handleSelectChange}
                       required
@@ -2267,9 +2225,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="lang2" data-lang-key="lessonLang2">
                       {languageStrings[currentLang].lessonLang2}
                     </label>
-                    <select
-                      id="lang2"
-                      name="lang2"
+                    <select 
+                      id="lang2" 
+                      name="lang2" 
                       value={formData.lang2}
                       onChange={handleSelectChange}
                     >
@@ -2280,9 +2238,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="is_native2" data-lang-key="isNative2">
                       {languageStrings[currentLang].isNative2}
                     </label>
-                    <select
-                      id="is_native2"
-                      name="is_native2"
+                    <select 
+                      id="is_native2" 
+                      name="is_native2" 
                       value={formData.is_native2}
                       onChange={handleSelectChange}
                     >
@@ -2291,14 +2249,14 @@ const TeacherRegistrationForm = () => {
                       <option value="no">{languageStrings[currentLang].no}</option>
                     </select>
                   </div>
-
+                  
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <label htmlFor="teaching_experience" data-lang-key="teachingExperience">
                       {languageStrings[currentLang].teachingExperience}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="teaching_experience"
-                      name="teaching_experience"
+                    <select 
+                      id="teaching_experience" 
+                      name="teaching_experience" 
                       value={formData.teaching_experience}
                       onChange={handleSelectChange}
                       required
@@ -2308,7 +2266,7 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s4_title2">
                   {languageStrings[currentLang].s4_title2}
@@ -2363,10 +2321,10 @@ const TeacherRegistrationForm = () => {
                   })}
                   <div className="hs-reg-selectable-grid" style={{ gridTemplateColumns: '1fr', maxWidth: '220px', marginTop: '1rem' }}>
                     <div className="hs-reg-selectable-item">
-                      <input
-                        type="checkbox"
-                        id="beginner_welcome"
-                        name="beginner_welcome"
+                      <input 
+                        type="checkbox" 
+                        id="beginner_welcome" 
+                        name="beginner_welcome" 
                         checked={formData.beginner_welcome}
                         onChange={handleInputChange}
                       />
@@ -2378,7 +2336,7 @@ const TeacherRegistrationForm = () => {
                     </div>
                   </div>
                 </div>
-
+                
                 <div className="hs-reg-form-group hs-reg-grid-full">
                   <label data-lang-key="lessonTypesLabel">
                     {languageStrings[currentLang].lessonTypesLabel}<span className="hs-reg-required">*</span>
@@ -2426,7 +2384,7 @@ const TeacherRegistrationForm = () => {
                     }
                   }, 8)}
                 </div>
-
+                
                 <div className="hs-reg-form-group hs-reg-grid-full">
                   <label data-lang-key="testPrepLabel">
                     {languageStrings[currentLang].testPrepLabel}
@@ -2464,7 +2422,7 @@ const TeacherRegistrationForm = () => {
                     }
                   })}
                 </div>
-
+                
                 <div className="hs-reg-form-group hs-reg-grid-full">
                   <label data-lang-key="engCertLabel">
                     {languageStrings[currentLang].engCertLabel}
@@ -2491,33 +2449,33 @@ const TeacherRegistrationForm = () => {
                   })}
                 </div>
               </section>
-
+              
               <div className="hs-reg-btn-nav">
-                <button
-                  type="button"
-                  className="hs-reg-btn hs-reg-btn-secondary"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn hs-reg-btn-secondary" 
                   onClick={() => prevStep(3)}
                   disabled={loading}
                 >
-                  <i className="fa-solid fa-arrow-left"></i>
+                  <i className="fa-solid fa-arrow-left"></i> 
                   <span data-lang-key="backBtn">
                     {languageStrings[currentLang].backBtn}
                   </span>
                 </button>
-                <button
-                  type="button"
-                  className="hs-reg-btn"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn" 
                   onClick={() => nextStep(5)}
                   disabled={loading}
                 >
                   <span data-lang-key="nextBtn">
                     {languageStrings[currentLang].nextBtn}
-                  </span>
+                  </span> 
                   <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
             </div>
-
+            
             {/* Step 5: Location & Fees */}
             <div className={`hs-reg-form-step ${currentStep === 5 ? 'active' : ''}`} id="step-5">
               <section className="hs-reg-form-section">
@@ -2529,9 +2487,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="trial_fee" data-lang-key="trialFee">
                       {languageStrings[currentLang].trialFee}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="trial_fee"
-                      name="trial_fee"
+                    <select 
+                      id="trial_fee" 
+                      name="trial_fee" 
                       value={formData.trial_fee}
                       onChange={handleSelectChange}
                       required
@@ -2543,9 +2501,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="private_fee" data-lang-key="privateFee">
                       {languageStrings[currentLang].privateFee}<span className="hs-reg-required">*</span>
                     </label>
-                    <select
-                      id="private_fee"
-                      name="private_fee"
+                    <select 
+                      id="private_fee" 
+                      name="private_fee" 
                       value={formData.private_fee}
                       onChange={handleSelectChange}
                       required
@@ -2557,9 +2515,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="group_fee" data-lang-key="groupFee">
                       {languageStrings[currentLang].groupFee}
                     </label>
-                    <select
-                      id="group_fee"
-                      name="group_fee"
+                    <select 
+                      id="group_fee" 
+                      name="group_fee" 
                       value={formData.group_fee}
                       onChange={handleSelectChange}
                     >
@@ -2570,9 +2528,9 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="online_fee" data-lang-key="onlineFee">
                       {languageStrings[currentLang].onlineFee}
                     </label>
-                    <select
-                      id="online_fee"
-                      name="online_fee"
+                    <select 
+                      id="online_fee" 
+                      name="online_fee" 
                       value={formData.online_fee}
                       onChange={handleSelectChange}
                     >
@@ -2581,14 +2539,14 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s5_title2">
                   {languageStrings[currentLang].s5_title2}
                 </h3>
                 {renderScheduleMatrix()}
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s5_title3">
                   {languageStrings[currentLang].s5_title3}
@@ -2605,17 +2563,17 @@ const TeacherRegistrationForm = () => {
                         renderSelectedAreaTags()
                       )}
                     </div>
-                    <button
-                      type="button"
-                      className="hs-reg-btn hs-reg-btn-secondary"
-                      style={{ marginTop: '1rem' }}
+                    <button 
+                      type="button" 
+                      className="hs-reg-btn hs-reg-btn-secondary" 
+                      style={{ marginTop: '1rem' }} 
                       id="open-area-modal-btn"
                       onClick={() => {
                         populatePrefecturesInModal();
                         setShowAreaModal(true);
                       }}
                     >
-                      <i className="fa-solid fa-map-location-dot"></i>
+                      <i className="fa-solid fa-map-location-dot"></i> 
                       <span data-lang-key="selectAreaBtn">
                         {languageStrings[currentLang].selectAreaBtn}
                       </span>
@@ -2633,23 +2591,23 @@ const TeacherRegistrationForm = () => {
                         renderSelectedStationTags()
                       )}
                     </div>
-                    <button
-                      type="button"
-                      className="hs-reg-btn hs-reg-btn-secondary"
-                      style={{ marginTop: '1rem' }}
+                    <button 
+                      type="button" 
+                      className="hs-reg-btn hs-reg-btn-secondary" 
+                      style={{ marginTop: '1rem' }} 
                       id="open-station-modal-btn"
                       onClick={() => {
                         populateRegions();
                         setShowStationModal(true);
                       }}
                     >
-                      <i className="fa-solid fa-train"></i>
+                      <i className="fa-solid fa-train"></i> 
                       <span data-lang-key="selectStationBtn">
                         {languageStrings[currentLang].selectStationBtn}
                       </span>
                     </button>
                   </div>
-
+                  
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <label data-lang-key="lessonLocation">
                       {languageStrings[currentLang].lessonLocation}<span className="hs-reg-required">*</span>
@@ -2671,30 +2629,30 @@ const TeacherRegistrationForm = () => {
                       }
                     })}
                   </div>
-
+                  
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <label htmlFor="landmark" data-lang-key="landmark">
                       {languageStrings[currentLang].landmark}<span className="hs-reg-required">*</span>
                     </label>
-                    <input
-                      type="text"
-                      id="landmark"
-                      name="landmark"
+                    <input 
+                      type="text" 
+                      id="landmark" 
+                      name="landmark" 
                       value={formData.landmark}
                       onChange={handleInputChange}
-                      required
+                      required 
                     />
                     <p className="hs-reg-help-text" data-lang-key="landmarkHelp">
                       {languageStrings[currentLang].landmarkHelp}
                     </p>
                   </div>
-
+                  
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <div className="hs-reg-selectable-item">
-                      <input
-                        type="checkbox"
-                        id="station_negotiable"
-                        name="station_negotiable"
+                      <input 
+                        type="checkbox" 
+                        id="station_negotiable" 
+                        name="station_negotiable" 
                         checked={formData.station_negotiable}
                         onChange={handleInputChange}
                       />
@@ -2707,28 +2665,28 @@ const TeacherRegistrationForm = () => {
                   </div>
                 </div>
               </section>
-
+              
               <div className="hs-reg-btn-nav">
-                <button
-                  type="button"
-                  className="hs-reg-btn hs-reg-btn-secondary"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn hs-reg-btn-secondary" 
                   onClick={() => prevStep(4)}
                   disabled={loading}
                 >
-                  <i className="fa-solid fa-arrow-left"></i>
+                  <i className="fa-solid fa-arrow-left"></i> 
                   <span data-lang-key="backBtn">
                     {languageStrings[currentLang].backBtn}
                   </span>
                 </button>
-                <button
-                  type="button"
-                  className="hs-reg-btn"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn" 
                   onClick={() => nextStep(6)}
                   disabled={loading}
                 >
                   <span data-lang-key="nextBtn">
                     {languageStrings[currentLang].nextBtn}
-                  </span>
+                  </span> 
                   <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
@@ -2745,10 +2703,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="hobbies" data-lang-key="hobbies">
                       {languageStrings[currentLang].hobbies}
                     </label>
-                    <input
-                      type="text"
-                      id="hobbies"
-                      name="hobbies"
+                    <input 
+                      type="text" 
+                      id="hobbies" 
+                      name="hobbies" 
                       value={formData.hobbies}
                       onChange={handleInputChange}
                     />
@@ -2757,10 +2715,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="movies" data-lang-key="movies">
                       {languageStrings[currentLang].movies}
                     </label>
-                    <input
-                      type="text"
-                      id="movies"
-                      name="movies"
+                    <input 
+                      type="text" 
+                      id="movies" 
+                      name="movies" 
                       value={formData.movies}
                       onChange={handleInputChange}
                     />
@@ -2769,10 +2727,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="music" data-lang-key="music">
                       {languageStrings[currentLang].music}
                     </label>
-                    <input
-                      type="text"
-                      id="music"
-                      name="music"
+                    <input 
+                      type="text" 
+                      id="music" 
+                      name="music" 
                       value={formData.music}
                       onChange={handleInputChange}
                     />
@@ -2781,10 +2739,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="food" data-lang-key="food">
                       {languageStrings[currentLang].food}
                     </label>
-                    <input
-                      type="text"
-                      id="food"
-                      name="food"
+                    <input 
+                      type="text" 
+                      id="food" 
+                      name="food" 
                       value={formData.food}
                       onChange={handleInputChange}
                     />
@@ -2793,10 +2751,10 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="love_japan" data-lang-key="loveJapan">
                       {languageStrings[currentLang].loveJapan}
                     </label>
-                    <input
-                      type="text"
-                      id="love_japan"
-                      name="love_japan"
+                    <input 
+                      type="text" 
+                      id="love_japan" 
+                      name="love_japan" 
                       value={formData.love_japan}
                       onChange={handleInputChange}
                     />
@@ -2805,31 +2763,31 @@ const TeacherRegistrationForm = () => {
                     <label htmlFor="message" data-lang-key="messageToStudent">
                       {languageStrings[currentLang].messageToStudent}<span className="hs-reg-required">*</span>
                     </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows="5"
+                    <textarea 
+                      id="message" 
+                      name="message" 
+                      rows="5" 
                       value={formData.message}
                       onChange={handleInputChange}
-                      required
+                      required 
                     ></textarea>
                   </div>
                 </div>
               </section>
-
+              
               <section className="hs-reg-form-section">
                 <h3 className="hs-reg-form-section-title" data-lang-key="s6_title2">
                   {languageStrings[currentLang].s6_title2}
                 </h3>
                 <div className="hs-reg-checkbox-group hs-reg-grid-full">
                   <label>
-                    <input
-                      type="checkbox"
-                      name="terms"
+                    <input 
+                      type="checkbox" 
+                      name="terms" 
                       checked={formData.terms}
                       onChange={handleInputChange}
-                      required
-                    />
+                      required 
+                    /> 
                     <a href="#" target="_blank" data-lang-key="termsLink">
                       {languageStrings[currentLang].termsLink}
                     </a>
@@ -2841,38 +2799,38 @@ const TeacherRegistrationForm = () => {
                 </div>
                 <div className="hs-reg-checkbox-group hs-reg-grid-full">
                   <label>
-                    <input
-                      type="checkbox"
-                      name="delete_request"
+                    <input 
+                      type="checkbox" 
+                      name="delete_request" 
                       checked={formData.delete_request}
                       onChange={handleInputChange}
-                    />
+                    /> 
                     <span data-lang-key="deleteRequest">
                       {languageStrings[currentLang].deleteRequest}
                     </span>
                   </label>
                 </div>
               </section>
-
+              
               <div className="hs-reg-btn-nav">
-                <button
-                  type="button"
-                  className="hs-reg-btn hs-reg-btn-secondary"
+                <button 
+                  type="button" 
+                  className="hs-reg-btn hs-reg-btn-secondary" 
                   onClick={() => prevStep(5)}
                   disabled={loading}
                 >
-                  <i className="fa-solid fa-arrow-left"></i>
+                  <i className="fa-solid fa-arrow-left"></i> 
                   <span data-lang-key="backBtn">
                     {languageStrings[currentLang].backBtn}
                   </span>
                 </button>
-                <button
-                  type="submit"
+                <button 
+                  type="submit" 
                   className="hs-reg-btn"
                 >
                   <span data-lang-key="submitBtn">
                     {languageStrings[currentLang].submitBtn}
-                  </span>
+                  </span> 
                   <i className="fa-solid fa-paper-plane"></i>
                 </button>
               </div>
@@ -2888,8 +2846,8 @@ const TeacherRegistrationForm = () => {
             <h3 data-lang-key="areaModalTitle">
               {languageStrings[currentLang].areaModalTitle}
             </h3>
-            <button
-              className="modal-close"
+            <button 
+              className="modal-close" 
               id="area-modal-close-btn"
               onClick={() => setShowAreaModal(false)}
             >
@@ -2913,11 +2871,11 @@ const TeacherRegistrationForm = () => {
             </div>
             <div className="area-column area-column-cities">
               <div className="area-city-grid" id="area-city-grid">
-                {selectedPrefForArea && cityData[selectedPrefForArea] &&
-                  Array.isArray(cityData[selectedPrefForArea][currentLang]) &&
+                {selectedPrefForArea && cityData[selectedPrefForArea] && 
+                  Array.isArray(cityData[selectedPrefForArea][currentLang]) && 
                   cityData[selectedPrefForArea][currentLang].map((cityName, index) => {
                     const enCities = cityData[selectedPrefForArea]['en'];
-                    const cityKey = Array.isArray(enCities) && enCities[index]
+                    const cityKey = Array.isArray(enCities) && enCities[index] 
                       ? enCities[index].toLowerCase().replace(/ /g, '-')
                       : cityName.toLowerCase().replace(/ /g, '-');
                     const isChecked = selectedAreas[selectedPrefForArea]?.cities?.includes(cityKey) || false;
@@ -2942,8 +2900,8 @@ const TeacherRegistrationForm = () => {
             </div>
           </div>
           <div className="modal-footer">
-            <button
-              className="hs-reg-btn"
+            <button 
+              className="hs-reg-btn" 
               id="area-modal-confirm-btn"
               onClick={() => setShowAreaModal(false)}
               data-lang-key="confirmBtn"
@@ -2961,8 +2919,8 @@ const TeacherRegistrationForm = () => {
             <h3 data-lang-key="stationModalTitle">
               {languageStrings[currentLang].stationModalTitle}
             </h3>
-            <button
-              className="modal-close"
+            <button 
+              className="modal-close" 
               id="station-modal-close-btn"
               onClick={() => setShowStationModal(false)}
             >
@@ -2995,7 +2953,7 @@ const TeacherRegistrationForm = () => {
                 {languageStrings[currentLang].prefecture}
               </h4>
               <ul className="station-list" id="station-prefecture-list">
-                {selectedRegion && stationData[selectedRegion]?.prefectures &&
+                {selectedRegion && stationData[selectedRegion]?.prefectures && 
                   Object.keys(stationData[selectedRegion].prefectures).map(prefKey => (
                     <li key={prefKey}>
                       <button
@@ -3020,8 +2978,8 @@ const TeacherRegistrationForm = () => {
                 {languageStrings[currentLang].line}
               </h4>
               <ul className="station-list" id="station-line-list">
-                {selectedRegion && selectedPrefForStation &&
-                  stationData[selectedRegion]?.prefectures[selectedPrefForStation]?.lines &&
+                {selectedRegion && selectedPrefForStation && 
+                  stationData[selectedRegion]?.prefectures[selectedPrefForStation]?.lines && 
                   Object.keys(stationData[selectedRegion].prefectures[selectedPrefForStation].lines).map(lineKey => (
                     <li key={lineKey}>
                       <button
@@ -3040,8 +2998,8 @@ const TeacherRegistrationForm = () => {
                 {languageStrings[currentLang].station}
               </h4>
               <div className="station-checkbox-grid" id="station-station-grid">
-                {selectedRegion && selectedPrefForStation && selectedLine &&
-                  Array.isArray(stationData[selectedRegion]?.prefectures[selectedPrefForStation]?.lines[selectedLine]?.stations) &&
+                {selectedRegion && selectedPrefForStation && selectedLine && 
+                  Array.isArray(stationData[selectedRegion]?.prefectures[selectedPrefForStation]?.lines[selectedLine]?.stations) && 
                   stationData[selectedRegion].prefectures[selectedPrefForStation].lines[selectedLine].stations.map(station => {
                     const isChecked = selectedStations[selectedLine]?.stations?.some(s => s.en === station.en) || false;
                     const stationId = `station-${selectedLine}-${station?.en?.toLowerCase().replace(/\s/g, '-') || 'unknown'}`;
@@ -3064,8 +3022,8 @@ const TeacherRegistrationForm = () => {
             </div>
           </div>
           <div className="modal-footer">
-            <button
-              className="hs-reg-btn"
+            <button 
+              className="hs-reg-btn" 
               id="station-modal-confirm-btn"
               onClick={() => setShowStationModal(false)}
               data-lang-key="confirmBtn"
