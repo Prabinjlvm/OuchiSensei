@@ -1,6 +1,6 @@
 // Set the base URL for the API
 import axios from 'axios';
-const BASE_URL = 'http://133.18.163.204:4005';
+const BASE_URL = 'https://backend.hello-lang-teacher.mydns.jp';
 
 // Create Teacher
 export async function createTeacher({ email, password, first_name, last_name, prefectures, municipality, address, mobile }) {
