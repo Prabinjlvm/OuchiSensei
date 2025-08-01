@@ -33,26 +33,37 @@ export default function TeacherLogin() {
     setLang(newLang);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    try {
-      const result = await teacherLogin({ email, password });
-      console.log('Login API result:', result);
-      // Try common locations for the token
-      const token = result?.token || result?.data?.token || result?.access_token;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.email.value;
+  const password = form.password.value;
+
+  try {
+    const result = await teacherLogin({ email, password });
+    console.log('Login API result:', result);
+
+    if (result?.UserId) {
+      const { token, id, email, first_name } = result.UserId;
+
       if (token) {
+        // ✅ Save the token and full user info in localStorage
         localStorage.setItem('teacherToken', token);
+        localStorage.setItem('teacherInfo', JSON.stringify(result.UserId));
+
+        // ✅ Navigate to profile or dashboard
         navigate('/teacher-profile-manage');
       } else {
         alert('Login succeeded but no token received.');
       }
-    } catch (error) {
-      alert("Login failed. Please check your credentials.");
+    } else {
+      alert('Login failed: No user data.');
     }
-  };
+  } catch (error) {
+    console.error('Login failed:', error);
+    alert('Login failed. Please check your credentials.');
+  }
+};
 
   const strings = languageStrings[lang];
 
