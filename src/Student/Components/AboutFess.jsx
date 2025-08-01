@@ -17,6 +17,7 @@ export default function AboutFees() {
               {t("aboutfees.hero_title")}
               <br />
               {t("aboutfees.hero_subtitle")}
+              
             </h2>
             <p className="aboutfess-sub-copy">
               {t("aboutfees.hero_desc")}
