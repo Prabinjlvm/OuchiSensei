@@ -947,7 +947,7 @@ const fetchTeacherDetails = async (id) => {
               className="teacher-card-container space-x-4 px-2 py-2 flex overflow-x-auto"
               style={{ scrollBehavior: 'smooth' }}
             >
-              {/* {similarTeachersData.map((simTeacher, idx) => (
+              {similarTeachersData.map((simTeacher, idx) => (
                 <a
                   key={idx}
                   href={simTeacher.link}
@@ -963,7 +963,7 @@ const fetchTeacherDetails = async (id) => {
                   <h4 className="font-semibold text-sm text-gray-800 truncate">{simTeacher.name}</h4>
                   <p className="text-xs base-text-color font-bold">{simTeacher.price}</p>
                 </a>
-              ))} */}
+              ))}
             </div>
             <button
               id="scrollRightBtn"

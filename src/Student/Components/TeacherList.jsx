@@ -23,6 +23,14 @@ const TeacherList = () => {
   const TEACHERS_PER_PAGE = 3;
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const pagesToShow = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
+  let endPage = Math.min(totalPages, startPage + pagesToShow - 1);
+  
+  // Adjust the start page if we're at the end of the page range
+  if (endPage - startPage + 1 < pagesToShow) {
+    startPage = Math.max(1, endPage - pagesToShow + 1);
+  }
   // const paginatedTeachers = teachers;
   // const totalPages = Math.ceil(teachers.length / TEACHERS_PER_PAGE);
   // const paginatedTeachers = teachers.slice(
@@ -491,8 +499,11 @@ const TeacherList = () => {
               ))}
             </div>
 
+            
+
             <nav className="mt-8 flex justify-center" aria-label="Pagination">
               <ul className="inline-flex items-center -space-x-px">
+                
                 <li>
                   <button
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -503,17 +514,25 @@ const TeacherList = () => {
                     <FaChevronLeft />
                   </button>
                 </li>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <li key={i}>
-                    <button
-                      onClick={() => setCurrentPage(i + 1)}
-                      className={`py-2 px-3 leading-tight ${currentPage === i + 1 ? 'text-green-700 bg-green-50 border border-green-700 hover:bg-green-100 hover:text-green-800 font-semibold' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
-                      aria-current={currentPage === i + 1 ? 'page' : undefined}
-                    >
-                      {i + 1}
-                    </button>
-                  </li>
-                ))}
+
+                {/* --- MODIFIED PART: Page Number Buttons --- */}
+                
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+                  const pageNumber = startPage + i;
+                  return (
+                    <li key={pageNumber}>
+                      <button
+                        onClick={() => setCurrentPage(pageNumber)}
+                        className={`py-2 px-3 leading-tight ${currentPage === pageNumber ? 'text-green-700 bg-green-50 border border-green-700 hover:bg-green-100 hover:text-green-800 font-semibold' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
+                        aria-current={currentPage === pageNumber ? 'page' : undefined}
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  );
+                })}
+
+            
                 <li>
                   <button
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
