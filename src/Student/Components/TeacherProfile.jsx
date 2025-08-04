@@ -29,19 +29,43 @@ export default function TeacherProfile() {
   const scrollLeftBtnRef = useRef(null);
   const scrollRightBtnRef = useRef(null);
 
-  const availableLessonTime = teachers?.available_lesson_time
-    ? teachers.available_lesson_time.split(',')
-    : [];
+  const rawLessonTime = teachers?.available_lesson_time
+  ? teachers.available_lesson_time.split(',')
+  : [];
 
-  const timeSlots = [
-    { label: '早朝', hours: ['07:00-08:00'] },
-    { label: '午前中', hours: ['08:00-09:00', '09:00-10:00'] },
-    { label: 'お昼前後', hours: ['10:00-11:00', '11:00-12:00'] },
-    { label: '午後', hours: ['13:00-14:00', '14:00-15:00'] },
-    { label: '夕方・夜', hours: ['17:00-18:00', '18:00-19:00'] },
-  ];
+const mapToGroupedSlot = (time) => {
+  const [day, hourRange] = time.split('_');
 
-  const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  const hourToSlotMap = {
+    '06.00-09.00': ['06:00-07:00', '07:00-08:00', '08:00-09:00'],
+    '09.00-12.00': ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00'],
+    '12.00-14.00': ['12:00-13:00', '13:00-14:00'],
+    '14.00-18.00': ['14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00'],
+    '18.00-22.00': ['18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00'],
+  };
+
+  for (const [groupedRange, hourList] of Object.entries(hourToSlotMap)) {
+    if (hourList.includes(hourRange)) {
+      return `${day}-${groupedRange}`;
+    }
+  }
+
+  return null; // If not matched
+};
+
+const availableLessonTime = rawLessonTime
+  .map(mapToGroupedSlot)
+  .filter(Boolean); // remove nulls
+
+const timeSlotToRangeMap = {
+  early_morning: '06.00-09.00',
+  morning: '09.00-12.00',
+  lunchtime: '12.00-14.00',
+  afternoon: '14.00-18.00',
+  evening: '18.00-22.00'
+};
+
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
   const fetchTeacherDetails = async (id) => {
     console.log('Teacher ID:', id);
@@ -416,29 +440,35 @@ export default function TeacherProfile() {
                     </tr>
                   </thead>
                   <tbody className="text-gray-700">
-                    {timeSlots.map((slot, rowIdx) => (
+                    {Object.entries(timeSlotToRangeMap).map(([slotKey, timeRange], rowIdx) => (
                       <tr
-                        key={slot.label}
+                        key={slotKey}
                         className={`transition-colors duration-150 ${rowIdx % 2 === 0 ? 'hover:bg-green-50' : 'bg-gray-50 hover:bg-green-50'
                           }`}
                       >
-                        <td className="p-3 border border-gray-200 font-medium">{slot.label}</td>
+                        {/* Japanese time slot label */}
+                        <td className="p-3 border border-gray-200 font-medium">
+                          {slotKey === 'early_morning' ? '早朝'
+                            : slotKey === 'morning' ? '午前中'
+                              : slotKey === 'lunchtime' ? 'お昼前後'
+                                : slotKey === 'afternoon' ? '午後'
+                                  : '夕方・夜'}
+                        </td>
+
+                        {/* Loop each day */}
                         {days.map(day => {
-                          // Match ANY of the hours for this slot
-                          const hasLesson = slot.hours.some(
-                            hour => availableLessonTime.includes(`${day}_${hour}`)
-                          );
+                          const key = `${day}-${timeRange}`; // e.g. "mon-06.00-09.00"
+                          const hasLesson = availableLessonTime.includes(key); // checks if teacher is available
                           return (
-                            <td key={day} className="p-3 border border-gray-200">
-                              {hasLesson && (
-                                <i className="fas fa-check-circle text-green-500" />
-                              )}
+                            <td key={key} className="p-3 border border-gray-200">
+                              {hasLesson && <i className="fas fa-check-circle text-green-500" />}
                             </td>
                           );
                         })}
                       </tr>
                     ))}
                   </tbody>
+
                 </table>
               </div>
               <p className="text-sm text-gray-500 mb-6">
@@ -864,7 +894,7 @@ export default function TeacherProfile() {
               className="teacher-card-container space-x-4 px-2 py-2 flex overflow-x-auto"
               style={{ scrollBehavior: 'smooth' }}
             >
-              {similarTeachersData.map((simTeacher, idx) => (
+              {/* {similarTeachersData.map((simTeacher, idx) => (
                 <a
                   key={idx}
                   href={simTeacher.link}
@@ -880,7 +910,7 @@ export default function TeacherProfile() {
                   <h4 className="font-semibold text-sm text-gray-800 truncate">{simTeacher.name}</h4>
                   <p className="text-xs base-text-color font-bold">{simTeacher.price}</p>
                 </a>
-              ))}
+              ))} */}
             </div>
             <button
               id="scrollRightBtn"
