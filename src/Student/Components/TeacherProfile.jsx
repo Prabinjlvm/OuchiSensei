@@ -15,7 +15,7 @@ export default function TeacherProfile() {
   // if (location.search.startsWith('?=id')) {
   //   id = location.search.replace('?=id', '');
   // }
- 
+
   const [teachers, setTeachers] = useState([]);
   const [municipalities, setMunicipalities] = useState([]);
   const [prefectures, setPrefectures] = useState([]);
@@ -28,41 +28,74 @@ export default function TeacherProfile() {
   const teacherCardContainerRef = useRef(null);
   const scrollLeftBtnRef = useRef(null);
   const scrollRightBtnRef = useRef(null);
-  
 
+  const rawLessonTime = teachers?.available_lesson_time
+  ? teachers.available_lesson_time.split(',')
+  : [];
 
+const mapToGroupedSlot = (time) => {
+  const [day, hourRange] = time.split('_');
 
-const fetchTeacherDetails = async (id) => {
-  console.log('Teacher ID:', id);
-  try {
+  const hourToSlotMap = {
+    '06.00-09.00': ['06:00-07:00', '07:00-08:00', '08:00-09:00'],
+    '09.00-12.00': ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00'],
+    '12.00-14.00': ['12:00-13:00', '13:00-14:00'],
+    '14.00-18.00': ['14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00'],
+    '18.00-22.00': ['18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00'],
+  };
 
-    const data = await getTeacherDetails(id);
-    console.log('API response:', data);
-
-    if (data?.success && data?.data) {
-      console.log('Teacher details:', data.data);
-      setTeachers(data.data); 
-    } else {
-      console.error('Unexpected response format:', data);
-      setTeachers(null);
+  for (const [groupedRange, hourList] of Object.entries(hourToSlotMap)) {
+    if (hourList.includes(hourRange)) {
+      return `${day}-${groupedRange}`;
     }
-  } catch (error) {
-    console.error('API call failed:', error);
-    setTeachers(null);
   }
+
+  return null; // If not matched
 };
 
-  
+const availableLessonTime = rawLessonTime
+  .map(mapToGroupedSlot)
+  .filter(Boolean); // remove nulls
+
+const timeSlotToRangeMap = {
+  early_morning: '06.00-09.00',
+  morning: '09.00-12.00',
+  lunchtime: '12.00-14.00',
+  afternoon: '14.00-18.00',
+  evening: '18.00-22.00'
+};
+
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+  const fetchTeacherDetails = async (id) => {
+    console.log('Teacher ID:', id);
+    try {
+
+      const data = await getTeacherDetails(id);
+      console.log('API response:', data);
+
+      if (data?.success && data?.data) {
+        console.log('Teacher details:', data.data);
+        setTeachers(data.data);
+      } else {
+        console.error('Unexpected response format:', data);
+        setTeachers(null);
+      }
+    } catch (error) {
+      console.error('API call failed:', error);
+      setTeachers(null);
+    }
+  };
 
   const fetchMunicipalities = async () => {
     try {
       const data = await getAllMuncipalities();
-     
+
       if (data?.municipalities) {
         setMunicipalities(data.municipalities);
       } else {
         console.error('Municipalities array not found in response:', data);
-        setMunicipalities([]); 
+        setMunicipalities([]);
       }
     } catch (error) {
       console.error('Error fetching municipalities:', error);
@@ -76,14 +109,14 @@ const fetchTeacherDetails = async (id) => {
 
       // Ensure the response contains the prefectures array
       if (data?.prefectures) {
-        setPrefectures(data.prefectures); 
+        setPrefectures(data.prefectures);
       } else {
         console.error('Prefectures array not found in response:', data);
-        setPrefectures([]); 
+        setPrefectures([]);
       }
     } catch (error) {
       console.error('Error fetching prefectures:', error);
-      setPrefectures([]); 
+      setPrefectures([]);
     }
   };
 
@@ -102,13 +135,12 @@ const fetchTeacherDetails = async (id) => {
     return ids
       .map((id) => {
         const municipality = municipalities.find((m) => m.id == id);
-       console.log('Found Municipality:', municipality);
+        console.log('Found Municipality:', municipality);
         return municipality ? municipality.name : 'Unknown Municipality';
-        
+
       })
       .join(', ');
   };
-  
 
   const getPrefectureName = (id) => {
     console.log('Teacher Prefecture ID:', id);
@@ -200,12 +232,13 @@ const fetchTeacherDetails = async (id) => {
       `}</style>
       {/* Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', top: 20, left: '50%', transform: 'translateX(-50%)', backgroundColor: '#333', color: 'white', padding: 
-        '15px 25px', borderRadius: 8, boxShadow: '0 4px 15px rgba(0,0,0,0.2)', zIndex: 1001, transition: 'opacity 0.3s ease', opacity: 1 }}>
+        <div style={{
+          position: 'fixed', top: 20, left: '50%', transform: 'translateX(-50%)', backgroundColor: '#333', color: 'white', padding:
+            '15px 25px', borderRadius: 8, boxShadow: '0 4px 15px rgba(0,0,0,0.2)', zIndex: 1001, transition: 'opacity 0.3s ease', opacity: 1
+        }}>
           {modalMessage}
         </div>
       )}
-      {/* Header Section */}
 
       <header className="base-bg-color text-white shadow-md sticky teacher-sticky-nav" style={{ top: '82px', zIndex: 50 }}>
         <div className="container mx-auto flex flex-wrap justify-between items-center">
@@ -263,8 +296,7 @@ const fetchTeacherDetails = async (id) => {
         </div>
       </header>
 
-
-      {/* Header Section */}
+      {/* Profile section */}
       <section className="hero-bg-image bg-gray-200 text-white relative pt-16 pb-12 md:pt-24 md:pb-20">
         <div className="absolute inset-0 bg-black opacity-60" />
         <div className="container mx-auto px-4 text-center relative z-10">
@@ -344,10 +376,12 @@ const fetchTeacherDetails = async (id) => {
         </nav>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-12">
+
+            {/* Teacher Message Section */}
             <section id="message" className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="section-title">Ash先生からのメッセージ</h2>
+              <h2 className="section-title">{`${teacher.first_name} ${teacher.last_name}`} 先生からのメッセージ</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Ash先生の温かい人柄と英語教育への情熱が伝わるメッセージです。日本語と英語の両方で、先生の思いやレッスンスタイルへの期待感を高めます。
+                {`${teacher.first_name} ${teacher.last_name}`} 先生の温かい人柄と英語教育への情熱が伝わるメッセージです。日本語と英語の両方で、先生の思いやレッスンスタイルへの期待感を高めます。
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -367,7 +401,7 @@ const fetchTeacherDetails = async (id) => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-gray-700">
-                    Hello! I'm Ash <span className="text-lg">🇬🇧/🇺🇸</span>
+                    Hello! I'm {`${teacher.first_name} ${teacher.last_name}`}  <span className="text-lg">🇬🇧/🇺🇸</span>
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
                     An English tutor excited to help you improve your skills in a
@@ -387,10 +421,12 @@ const fetchTeacherDetails = async (id) => {
                 </div>
               </div>
             </section>
+
+            {/* Estimated Lesson Time */}
             <section id="schedule" className="bg-white p-6 rounded-lg shadow-lg">
               <h2 className="section-title">レッスン可能時間の目安</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Ash先生のレッスンが可能な時間帯の目安です。曜日ごと、時間帯ごとに確認できます。実際の予約状況は先生と直接ご相談ください。
+                {`${teacher.first_name} ${teacher.last_name}`} 先生のレッスンが可能な時間帯の目安です。曜日ごと、時間帯ごとに確認できます。実際の予約状況は先生と直接ご相談ください。
                 下部には、曜日ごとの可能時間帯数をグラフで示しています。
               </p>
               <div className="overflow-x-auto mb-6 shadow rounded-md">
@@ -398,147 +434,41 @@ const fetchTeacherDetails = async (id) => {
                   <thead className="bg-gray-100">
                     <tr className="text-sm">
                       <th className="p-3 border border-gray-200">時間帯</th>
-                      <th className="p-3 border border-gray-200">月</th>
-                      <th className="p-3 border border-gray-200">火</th>
-                      <th className="p-3 border border-gray-200">水</th>
-                      <th className="p-3 border border-gray-200">木</th>
-                      <th className="p-3 border border-gray-200">金</th>
-                      <th className="p-3 border border-gray-200">土</th>
-                      <th className="p-3 border border-gray-200">日</th>
+                      {['月', '火', '水', '木', '金', '土', '日'].map(dayLabel => (
+                        <th key={dayLabel} className="p-3 border border-gray-200">{dayLabel}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody className="text-gray-700">
-                    <tr className="hover:bg-green-50 transition-colors duration-150">
-                      <td className="p-3 border border-gray-200 font-medium">
-                        早朝
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50 hover:bg-green-50 transition-colors duration-150">
-                      <td className="p-3 border border-gray-200 font-medium">
-                        午前中
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-green-50 transition-colors duration-150">
-                      <td className="p-3 border border-gray-200 font-medium">
-                        お昼前後
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50 hover:bg-green-50 transition-colors duration-150">
-                      <td className="p-3 border border-gray-200 font-medium">
-                        午後
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-green-50 transition-colors duration-150">
-                      <td className="p-3 border border-gray-200 font-medium">
-                        夕方・夜
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                      <td className="p-3 border border-gray-200">
-                        <i className="fas fa-check-circle text-green-500" />
-                      </td>
-                    </tr>
+                    {Object.entries(timeSlotToRangeMap).map(([slotKey, timeRange], rowIdx) => (
+                      <tr
+                        key={slotKey}
+                        className={`transition-colors duration-150 ${rowIdx % 2 === 0 ? 'hover:bg-green-50' : 'bg-gray-50 hover:bg-green-50'
+                          }`}
+                      >
+                        {/* Japanese time slot label */}
+                        <td className="p-3 border border-gray-200 font-medium">
+                          {slotKey === 'early_morning' ? '早朝'
+                            : slotKey === 'morning' ? '午前中'
+                              : slotKey === 'lunchtime' ? 'お昼前後'
+                                : slotKey === 'afternoon' ? '午後'
+                                  : '夕方・夜'}
+                        </td>
+
+                        {/* Loop each day */}
+                        {days.map(day => {
+                          const key = `${day}-${timeRange}`; // e.g. "mon-06.00-09.00"
+                          const hasLesson = availableLessonTime.includes(key); // checks if teacher is available
+                          return (
+                            <td key={key} className="p-3 border border-gray-200">
+                              {hasLesson && <i className="fas fa-check-circle text-green-500" />}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
                   </tbody>
+
                 </table>
               </div>
               <p className="text-sm text-gray-500 mb-6">
@@ -546,19 +476,26 @@ const fetchTeacherDetails = async (id) => {
                 、具体的なレッスンの日時はご利用者様と先生との間の双方の都合で個人的にお取り決めください。
               </p>
             </section>
+
+            {/* Lesson Information */}
             <section id="lessons" className="bg-white p-6 rounded-lg shadow-lg">
               <h2 className="section-title">レッスン情報</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Ash先生が提供するレッスンの詳細です。対応言語、対象者、レベル、得意な内容、レッスン場所など、あなたにぴったりのレッスンを見つけるための
+                {`${teacher.first_name} ${teacher.last_name}`} 先生が提供するレッスンの詳細です。対応言語、対象者、レベル、得意な内容、レッスン場所など、あなたにぴったりのレッスンを見つけるための
                 情報が満載です。
               </p>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
                 <div>
                   <h3 className="text-lg font-semibold mb-2 flex items-center">
                     <i className="fas fa-language mr-2 base-text-color" />
                     レッスン言語
                   </h3>
-                  <p>{teacher?.native_language}</p>
+                  <p>
+                    {[teacher.lesson_language_1, teacher.lesson_language_2, teacher.lesson_language_3]
+                      .filter((lang, index, self) => lang && self.indexOf(lang) === index)
+                      .join(', ')}
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-2 flex items-center">
@@ -599,17 +536,19 @@ const fetchTeacherDetails = async (id) => {
                     レッスン場所
                   </h3>
                   <ul className="custom-list text-gray-600">
-                    {(teacher.locations || []).map((location, index) => (
+                    {(teacher.lesson_location ? teacher.lesson_location.split(',') : []).map((location, index) => (
                       <li key={index}>{location}</li>
                     ))}
                   </ul>
                 </div>
               </div>
             </section>
+
+            {/* Lesson Area */}
             <section id="area" className="bg-white p-6 rounded-lg shadow-lg">
               <h2 className="section-title">レッスン対応エリア</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Ash先生がレッスンを提供可能なエリアです。市区町村に加え、主要な路線と駅もご確認いただけます。オンラインレッスンは全国対応です。
+                {`${teacher.first_name} ${teacher.last_name}`} 先生がレッスンを提供可能なエリアです。市区町村に加え、主要な路線と駅もご確認いただけます。オンラインレッスンは全国対応です。
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
@@ -701,10 +640,12 @@ const fetchTeacherDetails = async (id) => {
                 </div>
               </div>
             </section>
+
+            {/* Learn More about Teacher */}
             <section id="about" className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="section-title">Ash先生についてもっと詳しく</h2>
+              <h2 className="section-title">{`${teacher.first_name} ${teacher.last_name}`} 先生についてもっと詳しく</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Ash先生のバックグラウンドやパーソナリティをより深く知ることができます。学歴や職歴、資格、そして趣味や好きなことなどを通じて、先生との相性を確かめてみましょう。
+                {`${teacher.first_name} ${teacher.last_name}`} 先生のバックグラウンドやパーソナリティをより深く知ることができます。学歴や職歴、資格、そして趣味や好きなことなどを通じて、先生との相性を確かめてみましょう。
               </p>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-gray-700">
@@ -720,7 +661,7 @@ const fetchTeacherDetails = async (id) => {
                       <i className="fas fa-venus-mars mr-1 base-text-color" />
                       性別:
                     </strong>{" "}
-                    {teacher?.gender}
+                    {teacher?.sex}
                   </p>
                   <p>
                     <strong className="font-semibold">
@@ -734,7 +675,7 @@ const fetchTeacherDetails = async (id) => {
                       <i className="fas fa-comment-dots mr-1 base-text-color" />
                       母国語:
                     </strong>{" "}
-                    {teacher.native_Language}
+                    {teacher.native_language}
                   </p>
                   <p>
                     <strong className="font-semibold">
@@ -783,7 +724,7 @@ const fetchTeacherDetails = async (id) => {
                       <i className="fas fa-history mr-1 base-text-color" />
                       講師経験:
                     </strong>{" "}
-                    {teacher.teaching_experience}
+                    {teacher.teaching_experience}{""}years
                   </p>
                   <p className="sm:col-span-2">
                     <strong className="font-semibold">
@@ -828,21 +769,24 @@ const fetchTeacherDetails = async (id) => {
                       <i className="fas fa-torii-gate mr-1" />
                       日本の好きなところ:
                     </strong>{" "}
-                    {teacher?.favoritePlaces || '情報がありません'}
+                    {teacher?.like_about_japan || '情報がありません'}
                   </p>
                 </div>
               </div>
             </section>
           </div>
+
           <aside className="lg:col-span-1 space-y-8">
             <div className="sticky top-24">
+
+              {/* Lesson Fees */}
               <section
                 id="pricing"
                 className="bg-white p-6 rounded-lg shadow-lg mb-8"
               >
                 <h2 className="section-title text-2xl mb-6">レッスン料金</h2>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Ash先生のレッスン料金プランです。ご自身の目的や予算に合わせてお選びいただけます。料金は全て1時間あたりの税込価格です。
+                  {`${teacher.first_name} ${teacher.last_name}`} 先生のレッスン料金プランです。ご自身の目的や予算に合わせてお選びいただけます。料金は全て1時間あたりの税込価格です。
                 </p>
                 <div className="space-y-4">
                   <div className="p-4 border border-green-200 rounded-md bg-green-50 shadow-sm">
@@ -850,7 +794,7 @@ const fetchTeacherDetails = async (id) => {
                       <h3 className="text-lg font-semibold text-green-700">
                         体験レッスン
                       </h3>
-                      <p className="text-xl font-bold text-green-700">¥{teacher.trialPrice}</p>
+                      <p className="text-xl font-bold text-green-700">¥{teacher.trial_lesson_fee}</p>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
                       （初回限定 / 60分）
@@ -888,6 +832,8 @@ const fetchTeacherDetails = async (id) => {
                   ※対面レッスンの場合、場所により別途交通費実費をいただくことがあります。詳細はお問い合わせください。
                 </p>
               </section>
+
+              {/* Applications and Inquiries */}
               <section
                 id="contact-cta"
                 className="bg-white p-6 rounded-lg shadow-lg"
@@ -896,11 +842,11 @@ const fetchTeacherDetails = async (id) => {
                   お申込み・お問い合わせ
                 </h2>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Ash先生のレッスンに興味をお持ちいただきありがとうございます！体験レッスンのお申込みや、その他ご不明な点はお気軽にご連絡ください。
+                  {`${teacher.first_name} ${teacher.last_name}`} 先生のレッスンに興味をお持ちいただきありがとうございます！体験レッスンのお申込みや、その他ご不明な点はお気軽にご連絡ください。
                 </p>
                 <div className="space-y-3">
                   {/*
-                      <button onclick="handleInquiry('trial')" class="w-full accent-bg-color hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg text-lg shadow-md transition duration-300">
+                      <button onClick="handleInquiry('trial')" class="w-full accent-bg-color hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg text-lg shadow-md transition duration-300">
                           <i class="fas fa-calendar-check"></i> 体験レッスンを申し込む
                       </button>
 */}
@@ -927,6 +873,7 @@ const fetchTeacherDetails = async (id) => {
             </div>
           </aside>
         </div >
+
         {/* Similar Teachers Section */}
         < section id="similar-teachers" className="mt-16" >
           <h2 className="section-title text-center mb-8">こんな先生をお探しかも</h2>
@@ -947,7 +894,7 @@ const fetchTeacherDetails = async (id) => {
               className="teacher-card-container space-x-4 px-2 py-2 flex overflow-x-auto"
               style={{ scrollBehavior: 'smooth' }}
             >
-              {similarTeachersData.map((simTeacher, idx) => (
+              {/* {similarTeachersData.map((simTeacher, idx) => (
                 <a
                   key={idx}
                   href={simTeacher.link}
@@ -963,7 +910,7 @@ const fetchTeacherDetails = async (id) => {
                   <h4 className="font-semibold text-sm text-gray-800 truncate">{simTeacher.name}</h4>
                   <p className="text-xs base-text-color font-bold">{simTeacher.price}</p>
                 </a>
-              ))}
+              ))} */}
             </div>
             <button
               id="scrollRightBtn"
