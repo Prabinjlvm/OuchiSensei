@@ -428,6 +428,18 @@ const TeacherRegistrationForm = () => {
       [name]: value,
     }));
   };
+
+  const handleLanguageSelectChange = (e) => {
+    const { name, value } = e.target;
+  
+    const label = dropdownOptions.lessonLangOptions[currentLang][value];
+  
+    setFormData(currentData => ({
+      ...currentData,
+      [name]: label, // Save the label (e.g., "English") instead of the value ("en")
+    }));
+  };
+
   // Handle prefecture change
   const handlePrefectureChange = (e) => {
     const value = e.target.value;
@@ -519,6 +531,7 @@ const TeacherRegistrationForm = () => {
   };
  
   const formInput = mapFormDataToFormInput(formData);
+  console.log('Form Input Data:', formInput);
   
 
   const navigate = useNavigate();
@@ -2397,7 +2410,7 @@ const TeacherRegistrationForm = () => {
                       id="lang1"
                       name="lang1"
                       value={formData.lang1}
-                      onChange={handleSelectChange}
+                      onChange={handleLanguageSelectChange}
                       required
                     >
                       {renderSelectOptions('lessonLangOptions', languageStrings[currentLang].selectPlaceholder || '-none-')}
@@ -2427,7 +2440,7 @@ const TeacherRegistrationForm = () => {
                       id="lang2"
                       name="lang2"
                       value={formData.lang2}
-                      onChange={handleSelectChange}
+                      onChange={ handleLanguageSelectChange}
                     >
                       {renderSelectOptions('lessonLangOptions', languageStrings[currentLang].selectPlaceholder || '-none-')}
                     </select>
