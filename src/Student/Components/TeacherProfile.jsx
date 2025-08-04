@@ -29,43 +29,43 @@ export default function TeacherProfile() {
   const scrollLeftBtnRef = useRef(null);
   const scrollRightBtnRef = useRef(null);
 
-  const rawLessonTime = teachers?.available_lesson_time
-  ? teachers.available_lesson_time.split(',')
+const rawLessonTime = teachers?.available_lesson_time
+  ? teachers.available_lesson_time.split(',').map(entry => entry.trim())
   : [];
 
-const mapToGroupedSlot = (time) => {
-  const [day, hourRange] = time.split('_');
+const mapToGroupedSlot = (entry) => {
+  const [dayPart, ...timeParts] = entry.split('-').map(p => p.trim());
 
-  const hourToSlotMap = {
-    '06.00-09.00': ['06:00-07:00', '07:00-08:00', '08:00-09:00'],
-    '09.00-12.00': ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00'],
-    '12.00-14.00': ['12:00-13:00', '13:00-14:00'],
-    '14.00-18.00': ['14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00'],
-    '18.00-22.00': ['18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00'],
-  };
+  if (!dayPart || timeParts.length === 0) return null;
 
-  for (const [groupedRange, hourList] of Object.entries(hourToSlotMap)) {
-    if (hourList.includes(hourRange)) {
-      return `${day}-${groupedRange}`;
-    }
+  const timeRange = timeParts.join('-'); // Handles cases like '06.00 - 09.00'
+
+  const validDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  const validTimes = [
+    '06.00-09.00', '09.00-12.00', '12.00-14.00',
+    '14.00-18.00', '18.00-22.00'
+  ];
+
+  if (validDays.includes(dayPart.toLowerCase()) && validTimes.includes(timeRange)) {
+    return `${dayPart.toLowerCase()}-${timeRange}`;
   }
 
-  return null; // If not matched
+  return null;
 };
 
 const availableLessonTime = rawLessonTime
   .map(mapToGroupedSlot)
-  .filter(Boolean); // remove nulls
+  .filter(Boolean);
 
-const timeSlotToRangeMap = {
-  early_morning: '06.00-09.00',
-  morning: '09.00-12.00',
-  lunchtime: '12.00-14.00',
-  afternoon: '14.00-18.00',
-  evening: '18.00-22.00'
-};
+  const timeSlotToRangeMap = {
+    early_morning: '06.00-09.00',
+    morning: '09.00-12.00',
+    lunchtime: '12.00-14.00',
+    afternoon: '14.00-18.00',
+    evening: '18.00-22.00'
+  };
 
-const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
   const fetchTeacherDetails = async (id) => {
     console.log('Teacher ID:', id);
@@ -454,7 +454,6 @@ const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
                                 : slotKey === 'afternoon' ? '午後'
                                   : '夕方・夜'}
                         </td>
-
                         {/* Loop each day */}
                         {days.map(day => {
                           const key = `${day}-${timeRange}`; // e.g. "mon-06.00-09.00"
@@ -468,7 +467,6 @@ const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
                       </tr>
                     ))}
                   </tbody>
-
                 </table>
               </div>
               <p className="text-sm text-gray-500 mb-6">
@@ -503,7 +501,12 @@ const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
                     対象となる方
                   </h3>
                   <ul className="custom-list text-gray-600">
-                    {(teacher.targetGroups || []).map((group, index) => (
+                    {(Array.isArray(teacher.eligible_students)
+                      ? teacher.eligible_students
+                      : typeof teacher.eligible_students === 'string'
+                        ? teacher.eligible_students.split(',').map(s => s.trim())
+                        : []
+                    ).map((group, index) => (
                       <li key={index}>{group}</li>
                     ))}
                   </ul>
@@ -717,7 +720,7 @@ const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
                       <i className="fas fa-certificate mr-1 base-text-color" />
                       資格:
                     </strong>{" "}
-                    {(teacher?.qualifications || []).join(', ')}
+                    {(teacher?.english_teaching_qualification)}
                   </p>
                   <p>
                     <strong className="font-semibold">
