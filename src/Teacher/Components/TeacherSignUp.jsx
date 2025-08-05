@@ -105,7 +105,12 @@ const languageStrings = {
     s6_title2: "利用規約", termsLink: "利用規約", termsAgree: "を読み、同意します", deleteRequest: "アカウントが承認されなかった場合、または退会時に個人情報を削除することを申請します。",
     nextBtn: "次へ", backBtn: "戻る", submitBtn: "登録を完了する", selectPlaceholder: "選択してください", cityDisabledPlaceholder: "都道府県を選択してください", yes: "はい", no: "いいえ",
     areaModalTitle: "レッスンエリアを選択", confirmBtn: "確定",
-    stationModalTitle: "レッスン可能駅を選択", region: "地方", line: "路線", station: "駅"
+    stationModalTitle: "レッスン可能駅を選択", region: "地方", line: "路線", station: "駅",
+    stationAreaLabel: "レッスン可能な駅のエリア",
+    desiredLandmarksLabel: "希望の場所のランドマーク",
+    desiredLandmarksPlaceholder: "例：渋谷ヒカリエ、東京駅丸の内中央口など",
+    desiredLandmarksHelp: "生徒が場所を特定しやすいように、具体的なランドマークを入力してください。",
+
   },
   en: {
     pageTitle: "Teacher Registration | D.Info",
@@ -140,7 +145,11 @@ const languageStrings = {
     s6_title2: "Terms of Service", termsLink: "Terms of Service", termsAgree: "I have read and agree to the", deleteRequest: "I request my personal information to be deleted if my account is not approved or upon withdrawal.",
     nextBtn: "Next", backBtn: "Back", submitBtn: "Complete Registration", selectPlaceholder: "Please select", cityDisabledPlaceholder: "Select a prefecture first", yes: "Yes", no: "No",
     areaModalTitle: "Select Lesson Area", confirmBtn: "Confirm",
-    stationModalTitle: "Select Lesson Stations", region: "Region", line: "Line", station: "Station"
+    stationModalTitle: "Select Lesson Stations", region: "Region", line: "Line", station: "Station",
+    stationAreaLabel: "Station Area Where Lessons are Available",
+    desiredLandmarksLabel: "Landmarks for Desired Location",
+    desiredLandmarksPlaceholder: "e.g., Shibuya Hikarie, Tokyo Station Marunouchi Central Exit",
+    desiredLandmarksHelp: "Enter specific landmarks to help students identify the location.",
   }
 };
 
@@ -304,8 +313,8 @@ const TeacherRegistrationForm = () => {
   });
   const totalSteps = 6;
 
- 
- // Add prefectureCodes mapping at the top, after allPrefectures
+
+  // Add prefectureCodes mapping at the top, after allPrefectures
   // const prefectureCodes = {
   //   hokkaido: 1,
   //   aomori: 2,
@@ -429,16 +438,16 @@ const TeacherRegistrationForm = () => {
     }));
   };
 
-  const handleLanguageSelectChange = (e) => {
-    const { name, value } = e.target;
-  
-    const label = dropdownOptions.lessonLangOptions[currentLang][value];
-  
-    setFormData(currentData => ({
-      ...currentData,
-      [name]: label, // Save the label (e.g., "English") instead of the value ("en")
-    }));
-  };
+  //  const handleLanguageSelectChange = (e) => {
+  //     const { name, value } = e.target;
+
+  //     const label = dropdownOptions.lessonLangOptions[currentLang][value];
+
+  //     setFormData(currentData => ({
+  //       ...currentData,
+  //       [name]: label, // Save the label (e.g., "English") instead of the value ("en")
+  //     }));
+  //   };  
 
   // Handle prefecture change
   const handlePrefectureChange = (e) => {
@@ -529,10 +538,10 @@ const TeacherRegistrationForm = () => {
       profile_photo: formData.profile_photo || null
     };
   };
- 
+
   const formInput = mapFormDataToFormInput(formData);
   console.log('Form Input Data:', formInput);
-  
+
 
   const navigate = useNavigate();
   // Function to handle next step logic
@@ -771,16 +780,19 @@ const TeacherRegistrationForm = () => {
 
       return (
         <>
-          {/* If placeholderText is provided, render a standard, disabled placeholder. */}
           {placeholderText && (
             <option value="" disabled>
               {placeholderText}
             </option>
           )}
 
-          {/* Simply map over all entries. No special filtering needed. */}
-          {Object.entries(options).map(([value, label]) => (
-            <option key={value} value={value}>{label}</option>
+          {/* 
+            -- THE CHANGE IS HERE --
+            Instead of putting the key in the "value" attribute, we now put the LABEL.
+            We still use the original key for React's "key" prop, as that should be stable.
+          */}
+          {Object.entries(options).map(([key, label]) => (
+            <option key={key} value={label}>{label}</option>
           ))}
         </>
       );
@@ -840,7 +852,7 @@ const TeacherRegistrationForm = () => {
       }
     });
     return map;
-  }, [stationData]); 
+  }, [stationData]);
 
   useEffect(() => {
     // Initialize counters
@@ -941,8 +953,8 @@ const TeacherRegistrationForm = () => {
                   <input
                     type="checkbox"
                     id={`schedule_${day}_${timeKey}`}
-                    name="schedule" 
-                    value={scheduleValueString} 
+                    name="schedule"
+                    value={scheduleValueString}
                     // Checked logic now looks inside the array
                     checked={formData.schedule.includes(scheduleValueString)}
                     // Use the new array-based handler
@@ -2019,13 +2031,13 @@ const TeacherRegistrationForm = () => {
                     <select
                       id="nationality"
                       name="nationality"
-                      value={formData.nationality || ''} 
-                      onChange={handleSelectChange}      
+                      value={formData.nationality || ''}
+                      onChange={handleSelectChange}
                       required
                     >
                       <option value="" disabled>- select -</option>
                       {countriesList.map(country => (
-                        <option key={country.code} value={country.code}>
+                        <option key={country.code} value={country.name}>
                           {country.name}
                         </option>
                       ))}
@@ -2410,7 +2422,7 @@ const TeacherRegistrationForm = () => {
                       id="lang1"
                       name="lang1"
                       value={formData.lang1}
-                      onChange={handleLanguageSelectChange}
+                      onChange={handleSelectChange}
                       required
                     >
                       {renderSelectOptions('lessonLangOptions', languageStrings[currentLang].selectPlaceholder || '-none-')}
@@ -2440,7 +2452,7 @@ const TeacherRegistrationForm = () => {
                       id="lang2"
                       name="lang2"
                       value={formData.lang2}
-                      onChange={ handleLanguageSelectChange}
+                      onChange={handleSelectChange}
                     >
                       {renderSelectOptions('lessonLangOptions', languageStrings[currentLang].selectPlaceholder || '-none-')}
                     </select>
@@ -2789,6 +2801,33 @@ const TeacherRegistrationForm = () => {
                         {languageStrings[currentLang].selectAreaBtn}
                       </span>
                     </button>
+                  </div>
+                 
+                  <div className="hs-reg-form-group hs-reg-grid-full">
+                    <label data-lang-key="stationAreaLabel">
+                      {languageStrings[currentLang].stationAreaLabel}<span className="hs-reg-required">*</span>
+                    </label>
+                    {renderCheckboxGroup('station_area', {
+                      ja: { kanto: "関東エリア", kansai: "関西エリア" },
+                      en: { kanto: "Kanto Area", kansai: "Kansai Area" }
+                    })}
+                  </div>
+
+                  <div className="hs-reg-form-group hs-reg-grid-full">
+                    <label htmlFor="desired_landmarks" data-lang-key="desiredLandmarksLabel">
+                      {languageStrings[currentLang].desiredLandmarksLabel}
+                    </label>
+                    <input
+                      type="text"
+                      id="desired_landmarks"
+                      name="desired_landmarks"
+                      value={formData.desired_landmarks}
+                      onChange={handleInputChange}
+                      placeholder={languageStrings[currentLang].desiredLandmarksPlaceholder}
+                    />
+                    <p className="hs-reg-help-text" data-lang-key="desiredLandmarksHelp">
+                      {languageStrings[currentLang].desiredLandmarksHelp}
+                    </p>
                   </div>
 
                   <div className="hs-reg-form-group hs-reg-grid-full">
