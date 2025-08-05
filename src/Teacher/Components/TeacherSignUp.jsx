@@ -209,6 +209,8 @@ const TeacherRegistrationForm = () => {
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
   const [prefectureList, setPrefectureList] = useState([]);
   const [municipalityList, setMunicipalityList] = useState([]);
+  console.log("Prefecture List:", prefectureList);
+  console.log("Municipality List:", municipalityList);
   const [showAreaModal, setShowAreaModal] = useState(false);
   const [showStationModal, setShowStationModal] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState(null);
@@ -311,6 +313,7 @@ const TeacherRegistrationForm = () => {
     kanto_station_count: 0,
     kansai_station_count: 0,
   });
+  console.log("Form Data:", formData);
   const totalSteps = 6;
 
 
@@ -449,11 +452,15 @@ const TeacherRegistrationForm = () => {
   //     }));
   //   };  
 
+
   // Handle prefecture change
   const handlePrefectureChange = (e) => {
-    const value = e.target.value;
-    setSelectedPrefecture(value);
-    setFormData({ ...formData, prefecture: value, city: '' });
+    const selectedPrefectureId = e.target.value;
+    setFormData(currentData => ({
+      ...currentData,
+      prefecture: selectedPrefectureId,
+      city: '',
+    }));
   };
   // Converting form data to the required format for submission
   const mapFormDataToFormInput = (formData) => {
@@ -566,6 +573,7 @@ const TeacherRegistrationForm = () => {
             mobile: formData.phone
           };
           const res = await createTeacher(payload);
+          console.log('[Step 1] createTeacher payload:', payload);
           console.log('[Step 1] createTeacher response:', res);
           // Consolidate the success check into one block.
           if (res?.success && res?.UserId?.id) {
@@ -769,6 +777,27 @@ const TeacherRegistrationForm = () => {
     }
   };
 
+  const renderSelectOptionsWithId = (optionsKey, placeholderText = null) => {
+    try {
+      const options = dropdownOptions[optionsKey]?.[currentLang];
+
+      if (!options || typeof options !== 'object') {
+        console.error('Invalid options for', optionsKey, 'in language', currentLang);
+        return <option value="">Error loading options</option>;
+      }
+      return (
+        <>
+          {Object.entries(options).map(([key, label]) => (
+            <option key={key} value={key}>{label}</option>
+          ))}
+        </>
+      );
+    } catch (error) {
+      console.error('Error in renderSelectOptions:', error);
+      return <option value="">Error loading options</option>;
+    }
+  };
+
   const renderSelectOptions = (optionsKey, placeholderText = null) => {
     try {
       const options = dropdownOptions[optionsKey]?.[currentLang];
@@ -786,11 +815,6 @@ const TeacherRegistrationForm = () => {
             </option>
           )}
 
-          {/* 
-            -- THE CHANGE IS HERE --
-            Instead of putting the key in the "value" attribute, we now put the LABEL.
-            We still use the original key for React's "key" prop, as that should be stable.
-          */}
           {Object.entries(options).map(([key, label]) => (
             <option key={key} value={label}>{label}</option>
           ))}
@@ -1820,15 +1844,17 @@ const TeacherRegistrationForm = () => {
                       id="prefecture"
                       name="prefecture"
                       value={formData.prefecture}
-                      onChange={handlePrefectureChange}
+                      onChange={(e) => {
+                        setFormData({ ...formData, prefecture: e.target.value, city: '' }); // Reset city
+                      }}
                       required
                     >
                       <option value="" disabled selected>
                         {languageStrings[currentLang].selectPlaceholder}
                       </option>
-                      {Object.keys(allPrefectures).map(key => (
-                        <option key={key} value={key}>
-                          {allPrefectures[key][currentLang]}
+                      {prefectureList.map((pref) => (
+                        <option key={pref.id} value={pref.id}>
+                          {pref.name}
                         </option>
                       ))}
                     </select>
@@ -1841,7 +1867,9 @@ const TeacherRegistrationForm = () => {
                       id="city"
                       name="city"
                       value={formData.city}
-                      onChange={handleSelectChange}
+                      onChange={(e) => {
+                        setFormData({ ...formData, city: e.target.value });
+                      }}
                       required
                       disabled={!formData.prefecture}
                     >
@@ -1854,23 +1882,17 @@ const TeacherRegistrationForm = () => {
                           <option value="" disabled selected>
                             {languageStrings[currentLang].selectPlaceholder}
                           </option>
-                          {formData.prefecture && cityData[formData.prefecture] &&
-                            Array.isArray(cityData[formData.prefecture][currentLang]) &&
-                            cityData[formData.prefecture][currentLang].map((city, index) => {
-                              const enCities = cityData[formData.prefecture]['en'];
-                              const cityKey = Array.isArray(enCities) && enCities[index]
-                                ? enCities[index].toLowerCase().replace(/ /g, '-')
-                                : city.toLowerCase().replace(/ /g, '-');
-                              return (
-                                <option key={cityKey} value={cityKey}>
-                                  {city}
-                                </option>
-                              );
-                            })
-                          }
+                          {municipalityList
+                            .filter(muni => muni.prefecture_code.startsWith(formData.prefecture))
+                            .map((muni) => (
+                              <option key={muni.id} value={muni.id}>
+                                {muni.name}
+                              </option>
+                            ))}
                         </>
                       )}
                     </select>
+
                   </div>
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <label htmlFor="address" data-lang-key="address">
@@ -2802,7 +2824,7 @@ const TeacherRegistrationForm = () => {
                       </span>
                     </button>
                   </div>
-                 
+
                   <div className="hs-reg-form-group hs-reg-grid-full">
                     <label data-lang-key="stationAreaLabel">
                       {languageStrings[currentLang].stationAreaLabel}<span className="hs-reg-required">*</span>
