@@ -24,18 +24,18 @@ const getCountryList = (lang) => {
   }
 };
 
-const allPrefectures = {
-  hokkaido: { ja: "北海道", en: "Hokkaido" }, aomori: { ja: "青森県", en: "Aomori" }, iwate: { ja: "岩手県", en: "Iwate" }, miyagi: { ja: "宮城県", en: "Miyagi" }, akita: { ja: "秋田県", en: "Akita" }, yamagata: { ja: "山形県", en: "Yamagata" }, fukushima: { ja: "福島県", en: "Fukushima" }, ibaraki: { ja: "茨城県", en: "Ibaraki" }, tochigi: { ja: "栃木県", en: "Tochigi" }, gunma: { ja: "群馬県", en: "Gunma" }, saitama: { ja: "埼玉県", en: "Saitama" }, chiba: { ja: "千葉県", en: "Chiba" }, tokyo: { ja: "東京都", en: "Tokyo" }, kanagawa: { ja: "神奈川県", en: "Kanagawa" }, niigata: { ja: "新潟県", en: "Niigata" }, toyama: { ja: "富山県", en: "Toyama" }, ishikawa: { ja: "石川県", en: "Ishikawa" }, fukui: { ja: "福井県", en: "Fukui" }, yamanashi: { ja: "山梨県", en: "Yamanashi" }, nagano: { ja: "長野県", en: "Nagano" }, gifu: { ja: "岐阜県", en: "Gifu" }, shizuoka: { ja: "静岡県", en: "Shizuoka" }, aichi: { ja: "愛知県", en: "Aichi" }, mie: { ja: "三重県", en: "Mie" }, shiga: { ja: "滋賀県", en: "Shiga" }, kyoto: { ja: "京都府", en: "Kyoto" }, osaka: { ja: "大阪府", en: "Osaka" }, hyogo: { ja: "兵庫県", en: "Hyogo" }, nara: { ja: "奈良県", en: "Nara" }, wakayama: { ja: "和歌山県", en: "Wakayama" }, tottori: { ja: "鳥取県", en: "Tottori" }, shimane: { ja: "島根県", en: "Shimane" }, okayama: { ja: "岡山県", en: "Okayama" }, hiroshima: { ja: "広島県", en: "Hiroshima" }, yamaguchi: { ja: "山口県", en: "Yamaguchi" }, tokushima: { ja: "徳島県", en: "Tokushima" }, kagawa: { ja: "香川県", en: "Kagawa" }, ehime: { ja: "愛媛県", en: "Ehime" }, kochi: { ja: "高知県", en: "Kochi" }, fukuoka: { ja: "福岡県", en: "Fukuoka" }, saga: { ja: "佐賀県", en: "Saga" }, nagasaki: { ja: "長崎県", en: "Nagasaki" }, kumamoto: { ja: "熊本県", en: "Kumamoto" }, oita: { ja: "大分県", en: "Oita" }, miyazaki: { ja: "宮崎県", en: "Miyazaki" }, kagoshima: { ja: "鹿児島県", en: "Kagoshima" }, okinawa: { ja: "沖縄県", en: "Okinawa" }
-};
+// const allPrefectures = {
+//   hokkaido: { ja: "北海道", en: "Hokkaido" }, aomori: { ja: "青森県", en: "Aomori" }, iwate: { ja: "岩手県", en: "Iwate" }, miyagi: { ja: "宮城県", en: "Miyagi" }, akita: { ja: "秋田県", en: "Akita" }, yamagata: { ja: "山形県", en: "Yamagata" }, fukushima: { ja: "福島県", en: "Fukushima" }, ibaraki: { ja: "茨城県", en: "Ibaraki" }, tochigi: { ja: "栃木県", en: "Tochigi" }, gunma: { ja: "群馬県", en: "Gunma" }, saitama: { ja: "埼玉県", en: "Saitama" }, chiba: { ja: "千葉県", en: "Chiba" }, tokyo: { ja: "東京都", en: "Tokyo" }, kanagawa: { ja: "神奈川県", en: "Kanagawa" }, niigata: { ja: "新潟県", en: "Niigata" }, toyama: { ja: "富山県", en: "Toyama" }, ishikawa: { ja: "石川県", en: "Ishikawa" }, fukui: { ja: "福井県", en: "Fukui" }, yamanashi: { ja: "山梨県", en: "Yamanashi" }, nagano: { ja: "長野県", en: "Nagano" }, gifu: { ja: "岐阜県", en: "Gifu" }, shizuoka: { ja: "静岡県", en: "Shizuoka" }, aichi: { ja: "愛知県", en: "Aichi" }, mie: { ja: "三重県", en: "Mie" }, shiga: { ja: "滋賀県", en: "Shiga" }, kyoto: { ja: "京都府", en: "Kyoto" }, osaka: { ja: "大阪府", en: "Osaka" }, hyogo: { ja: "兵庫県", en: "Hyogo" }, nara: { ja: "奈良県", en: "Nara" }, wakayama: { ja: "和歌山県", en: "Wakayama" }, tottori: { ja: "鳥取県", en: "Tottori" }, shimane: { ja: "島根県", en: "Shimane" }, okayama: { ja: "岡山県", en: "Okayama" }, hiroshima: { ja: "広島県", en: "Hiroshima" }, yamaguchi: { ja: "山口県", en: "Yamaguchi" }, tokushima: { ja: "徳島県", en: "Tokushima" }, kagawa: { ja: "香川県", en: "Kagawa" }, ehime: { ja: "愛媛県", en: "Ehime" }, kochi: { ja: "高知県", en: "Kochi" }, fukuoka: { ja: "福岡県", en: "Fukuoka" }, saga: { ja: "佐賀県", en: "Saga" }, nagasaki: { ja: "長崎県", en: "Nagasaki" }, kumamoto: { ja: "熊本県", en: "Kumamoto" }, oita: { ja: "大分県", en: "Oita" }, miyazaki: { ja: "宮崎県", en: "Miyazaki" }, kagoshima: { ja: "鹿児島県", en: "Kagoshima" }, okinawa: { ja: "沖縄県", en: "Okinawa" }
+// };
 
-const cityData = {
-  hokkaido: { ja: ["札幌市", "函館市", "小樽市", "旭川市"], en: ["Sapporo", "Hakodate", "Otaru", "Asahikawa"] },
-  tokyo: { ja: ["千代田区", "中央区", "港区", "新宿区", "文京区", "台東区", "墨田区", "江東区", "品川区", "目黒区", "大田区", "世田谷区", "渋谷区", "中野区", "杉並区", "豊島区", "北区", "荒川区", "板橋区", "練馬区", "足立区", "葛飾区", "江戸川区", "八王子市", "立川市", "武蔵野市", "三鷹市", "青梅市", "府中市", "昭島市", "調布市", "町田市", "小金井市", "小平市", "日野市", "東村山市", "国分寺市", "国立市", "福生市", "狛江市", "東大和市", "清瀬市", "東久留米市", "武蔵村山市", "多摩市", "稲城市", "羽村市", "あきる野市", "西東京市"], en: ["Chiyoda", "Chuo", "Minato", "Shinjuku", "Bunkyo", "Taito", "Sumida", "Koto", "Shinagawa", "Meguro", "Ota", "Setagaya", "Shibuya", "Nakano", "Suginami", "Toshima", "Kita", "Arakawa", "Itabashi", "Nerima", "Adachi", "Katsushika", "Edogawa", "Hachioji", "Tachikawa", "Musashino", "Mitaka", "Ome", "Fuchu", "Akishima", "Chofu", "Machida", "Koganei", "Kodaira", "Hino", "Higashimurayama", "Kokubunji", "Kunitachi", "Fussa", "Komae", "Higashiyamato", "Kiyose", "Higashikurume", "Musashimurayama", "Tama", "Inagi", "Hamura", "Akiruno", "Nishitokyo"] },
-  kanagawa: { ja: ["横浜市", "川崎市", "相模原市", "横須賀市", "平塚市"], en: ["Yokohama", "Kawasaki", "Sagamihara", "Yokosuka", "Hiratsuka"] },
-  aichi: { ja: ["名古屋市", "豊橋市", "岡崎市", "一宮市", "瀬戸市"], en: ["Nagoya", "Toyohashi", "Okazaki", "Ichinomiya", "Seto"] },
-  osaka: { ja: ["大阪市", "堺市", "岸和田市", "豊中市", "池田市"], en: ["Osaka", "Sakai", "Kishiwada", "Toyonaka", "Ikeda"] },
-  fukuoka: { ja: ["北九州市", "福岡市", "大牟田市", "久留米市", "直方市"], en: ["Kitakyushu", "Fukuoka", "Omuta", "Kurume", "Nogata"] }
-};
+// const cityData = {
+//   hokkaido: { ja: ["札幌市", "函館市", "小樽市", "旭川市"], en: ["Sapporo", "Hakodate", "Otaru", "Asahikawa"] },
+//   tokyo: { ja: ["千代田区", "中央区", "港区", "新宿区", "文京区", "台東区", "墨田区", "江東区", "品川区", "目黒区", "大田区", "世田谷区", "渋谷区", "中野区", "杉並区", "豊島区", "北区", "荒川区", "板橋区", "練馬区", "足立区", "葛飾区", "江戸川区", "八王子市", "立川市", "武蔵野市", "三鷹市", "青梅市", "府中市", "昭島市", "調布市", "町田市", "小金井市", "小平市", "日野市", "東村山市", "国分寺市", "国立市", "福生市", "狛江市", "東大和市", "清瀬市", "東久留米市", "武蔵村山市", "多摩市", "稲城市", "羽村市", "あきる野市", "西東京市"], en: ["Chiyoda", "Chuo", "Minato", "Shinjuku", "Bunkyo", "Taito", "Sumida", "Koto", "Shinagawa", "Meguro", "Ota", "Setagaya", "Shibuya", "Nakano", "Suginami", "Toshima", "Kita", "Arakawa", "Itabashi", "Nerima", "Adachi", "Katsushika", "Edogawa", "Hachioji", "Tachikawa", "Musashino", "Mitaka", "Ome", "Fuchu", "Akishima", "Chofu", "Machida", "Koganei", "Kodaira", "Hino", "Higashimurayama", "Kokubunji", "Kunitachi", "Fussa", "Komae", "Higashiyamato", "Kiyose", "Higashikurume", "Musashimurayama", "Tama", "Inagi", "Hamura", "Akiruno", "Nishitokyo"] },
+//   kanagawa: { ja: ["横浜市", "川崎市", "相模原市", "横須賀市", "平塚市"], en: ["Yokohama", "Kawasaki", "Sagamihara", "Yokosuka", "Hiratsuka"] },
+//   aichi: { ja: ["名古屋市", "豊橋市", "岡崎市", "一宮市", "瀬戸市"], en: ["Nagoya", "Toyohashi", "Okazaki", "Ichinomiya", "Seto"] },
+//   osaka: { ja: ["大阪市", "堺市", "岸和田市", "豊中市", "池田市"], en: ["Osaka", "Sakai", "Kishiwada", "Toyonaka", "Ikeda"] },
+//   fukuoka: { ja: ["北九州市", "福岡市", "大牟田市", "久留米市", "直方市"], en: ["Kitakyushu", "Fukuoka", "Omuta", "Kurume", "Nogata"] }
+// };
 
 const stationData = {
   kanto: {
@@ -205,18 +205,18 @@ const TeacherRegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentLang, setCurrentLang] = useState('en');
   const [selectedAreas, setSelectedAreas] = useState({});
+  console.log("Selected Areas:", selectedAreas);
   const [selectedStations, setSelectedStations] = useState({});
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
   const [prefectureList, setPrefectureList] = useState([]);
   const [municipalityList, setMunicipalityList] = useState([]);
-  console.log("Prefecture List:", prefectureList);
-  console.log("Municipality List:", municipalityList);
   const [showAreaModal, setShowAreaModal] = useState(false);
   const [showStationModal, setShowStationModal] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedPrefForStation, setSelectedPrefForStation] = useState(null);
   const [selectedLine, setSelectedLine] = useState(null);
   const [selectedPrefForArea, setSelectedPrefForArea] = useState(null);
+  console.log("Selected Prefecture for Area:", selectedPrefForArea);
   const [teacherId, setTeacherId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -312,6 +312,7 @@ const TeacherRegistrationForm = () => {
     delete_request: false,
     kanto_station_count: 0,
     kansai_station_count: 0,
+    station_area: [],
   });
   console.log("Form Data:", formData);
   const totalSteps = 6;
@@ -441,16 +442,16 @@ const TeacherRegistrationForm = () => {
     }));
   };
 
-  //  const handleLanguageSelectChange = (e) => {
-  //     const { name, value } = e.target;
+   const handleLanguageSelectChange = (e) => {
+      const { name, value } = e.target;
 
-  //     const label = dropdownOptions.lessonLangOptions[currentLang][value];
+      const label = dropdownOptions.lessonLangOptions[currentLang][value];
 
-  //     setFormData(currentData => ({
-  //       ...currentData,
-  //       [name]: label, // Save the label (e.g., "English") instead of the value ("en")
-  //     }));
-  //   };  
+      setFormData(currentData => ({
+        ...currentData,
+        [name]: label, // Save the label (e.g., "English") instead of the value ("en")
+      }));
+    };  
 
 
   // Handle prefecture change
@@ -637,30 +638,26 @@ const TeacherRegistrationForm = () => {
   };
   // Area Modal Functions
   const populatePrefecturesInModal = () => {
-    const prefectures = Object.keys(cityData);
-    if (prefectures.length > 0) {
-      setSelectedPrefForArea(prefectures[0]);
+    if (prefectureList && prefectureList.length > 0) {
+      setSelectedPrefForArea(prefectureList[0].id);
     }
   };
 
-  const handleCitySelection = (prefKey, cityKey, isSelected) => {
-    const newSelectedAreas = { ...selectedAreas };
+  const handleCitySelection = (prefId, muniId, isSelected) => {
+    const newSelectedAreas = JSON.parse(JSON.stringify(selectedAreas));
+  
     if (isSelected) {
-      if (!newSelectedAreas[prefKey]) {
-        newSelectedAreas[prefKey] = {
-          ja: allPrefectures[prefKey].ja,
-          en: allPrefectures[prefKey].en,
-          cities: []
-        };
+      if (!newSelectedAreas[prefId]) {
+        newSelectedAreas[prefId] = { cities: [] };
       }
-      if (!newSelectedAreas[prefKey].cities.includes(cityKey)) {
-        newSelectedAreas[prefKey].cities.push(cityKey);
+      if (!newSelectedAreas[prefId].cities.includes(muniId)) {
+        newSelectedAreas[prefId].cities.push(muniId);
       }
     } else {
-      if (newSelectedAreas[prefKey]) {
-        newSelectedAreas[prefKey].cities = newSelectedAreas[prefKey].cities.filter(c => c !== cityKey);
-        if (newSelectedAreas[prefKey].cities.length === 0) {
-          delete newSelectedAreas[prefKey];
+      if (newSelectedAreas[prefId]) {
+        newSelectedAreas[prefId].cities = newSelectedAreas[prefId].cities.filter(id => id !== muniId);
+        if (newSelectedAreas[prefId].cities.length === 0) {
+          delete newSelectedAreas[prefId];
         }
       }
     }
@@ -669,20 +666,22 @@ const TeacherRegistrationForm = () => {
 
   const renderSelectedAreaTags = () => {
     try {
-      return Object.keys(selectedAreas).map(prefKey => {
-        const cities = selectedAreas[prefKey]?.cities;
-        if (!Array.isArray(cities)) {
-          console.error('selectedAreas[prefKey].cities is not an array:', cities);
-          return null;
-        }
-        return cities.map(cityKey => {
-          const cityIndex = cityData[prefKey]?.['en']?.findIndex(c => c.toLowerCase().replace(/ /g, '-') === cityKey);
-          const cityName = cityData[prefKey]?.[currentLang]?.[cityIndex] || cityKey;
+      return Object.keys(selectedAreas).map(prefId => {
+        
+        const prefecture = prefectureList.find(p => p.id === prefId)
+        const prefectureName = prefecture ? prefecture.name : prefId;
+        const cities = selectedAreas[prefId]?.cities;
+        if (!Array.isArray(cities)) return null; 
+  
+        return cities.map(muniId => {
+          const municipality = municipalityList.find(m => m.id === muniId);
+          const municipalityName = municipality ? municipality.name : muniId;
+          
           return (
-            <span key={`${prefKey}-${cityKey}`} className="area-tag">
-              {allPrefectures[prefKey]?.[currentLang] || prefKey} {cityName}
+            <span key={`${prefId}-${muniId}`} className="area-tag">
+              {`${prefectureName} ${municipalityName}`}
               <button onClick={() => {
-                handleCitySelection(prefKey, cityKey, false);
+                handleCitySelection(prefId, muniId, false);
               }}>&times;</button>
             </span>
           );
@@ -777,26 +776,7 @@ const TeacherRegistrationForm = () => {
     }
   };
 
-  const renderSelectOptionsWithId = (optionsKey, placeholderText = null) => {
-    try {
-      const options = dropdownOptions[optionsKey]?.[currentLang];
 
-      if (!options || typeof options !== 'object') {
-        console.error('Invalid options for', optionsKey, 'in language', currentLang);
-        return <option value="">Error loading options</option>;
-      }
-      return (
-        <>
-          {Object.entries(options).map(([key, label]) => (
-            <option key={key} value={key}>{label}</option>
-          ))}
-        </>
-      );
-    } catch (error) {
-      console.error('Error in renderSelectOptions:', error);
-      return <option value="">Error loading options</option>;
-    }
-  };
 
   const renderSelectOptions = (optionsKey, placeholderText = null) => {
     try {
@@ -825,8 +805,9 @@ const TeacherRegistrationForm = () => {
       return <option value="">Error loading options</option>;
     }
   };
+
   // Render checkbox group with error handling
-  const renderCheckboxGroup = (name, options, maxSelection = null) => {
+  const renderCheckboxGroup = (name, options, maxSelection = null, onChangeHandler = handleInputChange) => { // Accept a handler, default to handleInputChange
     try {
       const selectedCount = formData[name] ? formData[name].length : 0;
       const currentOptions = options?.[currentLang];
@@ -844,7 +825,7 @@ const TeacherRegistrationForm = () => {
                 name={name}
                 value={value}
                 checked={formData[name]?.includes(value)}
-                onChange={handleInputChange}
+                onChange={onChangeHandler} // Use the passed-in handler
                 disabled={maxSelection && selectedCount >= maxSelection && !formData[name]?.includes(value)}
               />
               <label htmlFor={`${name}_${value}`}>{label}</label>
@@ -858,48 +839,24 @@ const TeacherRegistrationForm = () => {
     }
   };
 
-  const lineToRegionMap = useMemo(() => {
-    const map = {};
-    if (!stationData) return map;
-    Object.keys(stationData).forEach(regionKey => { // regionKey is 'kanto' or 'kansai'
-      const region = stationData[regionKey];
-      if (region.prefectures) {
-        Object.keys(region.prefectures).forEach(prefKey => {
-          const prefecture = region.prefectures[prefKey];
-          if (prefecture.lines) {
-            Object.keys(prefecture.lines).forEach(lineKey => {
-              // Store the region for each line key
-              map[lineKey] = regionKey;
-            });
-          }
-        });
-      }
+  //handle Area Change
+  const handleStationAreaChange = (event) => {
+    const { value, checked } = event.target;
+    setFormData(prevFormData => {
+      const newStationArea = checked
+        ? [...prevFormData.station_area, value] // Add the value if checked
+        : prevFormData.station_area.filter(area => area !== value); // Remove the value if unchecked
+      return {
+        ...prevFormData, 
+        station_area: newStationArea, 
+        kanto_station_count: newStationArea.includes('kanto') ? 1 : 0, // Update kanto count
+        kansai_station_count: newStationArea.includes('kansai') ? 1 : 0, // Update kansai count
+      };
     });
-    return map;
-  }, [stationData]);
-
-  useEffect(() => {
-    // Initialize counters
-    let kantoCount = 0;
-    let kansaiCount = 0;
-
-    Object.keys(selectedStations).forEach(lineKey => {
-      const region = lineToRegionMap[lineKey];
-      const stationsInLine = selectedStations[lineKey]?.stations?.length || 0;
-      // Add the count to the correct regional total
-      if (region === 'kanto') {
-        kantoCount += stationsInLine;
-      } else if (region === 'kansai') {
-        kansaiCount += stationsInLine;
-      }
-    });
-    setFormData(currentData => ({
-      ...currentData,
-      kanto_station_count: kantoCount,
-      kansai_station_count: kansaiCount
-    }));
-
-  }, [selectedStations, lineToRegionMap]);
+  };
+ 
+  
+ 
 
   const renderRadioGroup = (name, options) => {
     try {
@@ -930,6 +887,8 @@ const TeacherRegistrationForm = () => {
       return <div>Error loading options</div>;
     }
   };
+
+  // Handle schedule change for the matrix
   const handleScheduleChange = (e) => {
     const { value, checked } = e.target;
     setFormData(prevFormData => {
@@ -2829,10 +2788,16 @@ const TeacherRegistrationForm = () => {
                     <label data-lang-key="stationAreaLabel">
                       {languageStrings[currentLang].stationAreaLabel}<span className="hs-reg-required">*</span>
                     </label>
-                    {renderCheckboxGroup('station_area', {
-                      ja: { kanto: "関東エリア", kansai: "関西エリア" },
-                      en: { kanto: "Kanto Area", kansai: "Kansai Area" }
-                    })}
+                    {/* No changes to the function call itself are needed if the handler is passed correctly */}
+                    {renderCheckboxGroup(
+                      'station_area',
+                      {
+                        ja: { kanto: "関東エリア", kansai: "関西エリア" },
+                        en: { kanto: "Kanto Area", kansai: "Kansai Area" }
+                      },
+                      null, // No max selection
+                      handleStationAreaChange // Pass the DEDICATED handler here
+                    )}
                   </div>
 
                   <div className="hs-reg-form-group hs-reg-grid-full">
@@ -3137,13 +3102,13 @@ const TeacherRegistrationForm = () => {
           <div className="modal-body">
             <div className="area-column area-column-prefectures">
               <ul className="area-prefecture-list" id="area-prefecture-list">
-                {Object.keys(cityData).map(prefKey => (
-                  <li key={prefKey}>
+                {prefectureList.map(pref => (
+                  <li key={pref.id}>
                     <button
-                      className={selectedPrefForArea === prefKey ? 'selected' : ''}
-                      onClick={() => setSelectedPrefForArea(prefKey)}
+                      className={selectedPrefForArea === pref.id ? 'selected' : ''}
+                      onClick={() => setSelectedPrefForArea(pref.id)}
                     >
-                      {allPrefectures[prefKey][currentLang]}
+                      {pref.name}
                     </button>
                   </li>
                 ))}
@@ -3151,30 +3116,28 @@ const TeacherRegistrationForm = () => {
             </div>
             <div className="area-column area-column-cities">
               <div className="area-city-grid" id="area-city-grid">
-                {selectedPrefForArea && cityData[selectedPrefForArea] &&
-                  Array.isArray(cityData[selectedPrefForArea][currentLang]) &&
-                  cityData[selectedPrefForArea][currentLang].map((cityName, index) => {
-                    const enCities = cityData[selectedPrefForArea]['en'];
-                    const cityKey = Array.isArray(enCities) && enCities[index]
-                      ? enCities[index].toLowerCase().replace(/ /g, '-')
-                      : cityName.toLowerCase().replace(/ /g, '-');
-                    const isChecked = selectedAreas[selectedPrefForArea]?.cities?.includes(cityKey) || false;
-                    return (
-                      <div key={cityKey} className="hs-reg-selectable-item">
-                        <input
-                          type="checkbox"
-                          id={`modal-city-${selectedPrefForArea}-${cityKey}`}
-                          name="modal_city"
-                          value={cityKey}
-                          checked={isChecked}
-                          onChange={(e) => handleCitySelection(selectedPrefForArea, cityKey, e.target.checked)}
-                        />
-                        <label htmlFor={`modal-city-${selectedPrefForArea}-${cityKey}`}>
-                          {cityName}
-                        </label>
-                      </div>
-                    );
-                  })
+                {selectedPrefForArea &&
+                  municipalityList
+                    .filter(muni => muni.prefecture_code.startsWith(selectedPrefForArea))
+                    .map((muni) => {
+                      const isChecked = selectedAreas[selectedPrefForArea]?.cities?.includes(muni.id) || false;
+
+                      return (
+                        <div key={muni.id} className="hs-reg-selectable-item">
+                          <input
+                            type="checkbox"
+                            id={`modal-city-${selectedPrefForArea}-${muni.id}`}
+                            name="modal_city"
+                            value={muni.id} // Use the unique municipality ID as the value
+                            checked={isChecked}
+                            onChange={(e) => handleCitySelection(selectedPrefForArea, muni.id, e.target.checked)}
+                          />
+                          <label htmlFor={`modal-city-${selectedPrefForArea}-${muni.id}`}>
+                            {muni.name}
+                          </label>
+                        </div>
+                      );
+                    })
                 }
               </div>
             </div>
@@ -3189,9 +3152,9 @@ const TeacherRegistrationForm = () => {
               {languageStrings[currentLang].confirmBtn}
             </button>
           </div>
+
         </div>
       </div>
-
       {/* Station Modal */}
       <div className={`modal-overlay ${showStationModal ? 'active' : ''}`} id="station-modal">
         <div className="modal-content">
